@@ -10,6 +10,7 @@ import { useAuthStore, useUIStore, useNotificationStore } from '@/store';
 import { cn, getInitials } from '@/utils';
 import { notificationService } from '@/services/otherServices';
 import { useT } from '@/i18n/translations';
+import logoImage from '@/image/logo.png';
 
 // ====== DARK MODE INITIALIZER (run in App.tsx useEffect too) ======
 export function applyStoredTheme() {
@@ -220,13 +221,8 @@ export const Navbar: React.FC = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16 lg:h-20">
             {/* Logo */}
-            <Link to="/" className="flex items-center gap-2 group">
-              <div className="w-8 h-8 bg-[#0F172A] rounded-xl flex items-center justify-center group-hover:bg-accent transition-colors duration-300">
-                <Car className="w-4 h-4 text-white" />
-              </div>
-              <span className={cn('font-display text-2xl font-bold tracking-tight', isDark ? 'text-white' : 'text-[#0F172A]')}>
-                Luxe<span className="text-accent">Way</span>
-              </span>
+            <Link to="/" className="flex items-center gap-2 logo-wrapper">
+              <img src={logoImage} alt="LuxeWay" className="logo-effect h-16 md:h-20 lg:h-24 w-auto object-contain" />
             </Link>
 
             {/* Desktop Nav */}

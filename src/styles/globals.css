@@ -437,6 +437,39 @@
     box-shadow: 0 0 30px rgba(59, 130, 246, 0.3);
   }
 
+  /* ====== LOGO EFFECTS ====== */
+  .logo-wrapper {
+    position: relative;
+    display: inline-flex;
+    transform-origin: center;
+    transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .logo-wrapper:hover {
+    transform: translateY(-2px) scale(1.02);
+  }
+
+  .logo-effect {
+    position: relative;
+    z-index: 1;
+    filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.15));
+    transition: filter 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  
+  .logo-wrapper:hover .logo-effect {
+    /* Subtle metallic gold drop shadow */
+    filter: drop-shadow(0 15px 30px rgba(212, 175, 55, 0.3)) drop-shadow(0 0 10px rgba(212, 175, 55, 0.5));
+  }
+
+  html.dark .logo-effect {
+    /* invert + hue-rotate(180deg) makes black text white, while preserving original gold/metallic hues! */
+    filter: invert(1) hue-rotate(180deg) brightness(1.5) contrast(1.1) drop-shadow(0 4px 10px rgba(255, 255, 255, 0.05));
+  }
+  
+  html.dark .logo-wrapper:hover .logo-effect {
+    filter: invert(1) hue-rotate(180deg) brightness(1.8) contrast(1.2) drop-shadow(0 15px 30px rgba(212, 175, 55, 0.4)) drop-shadow(0 0 15px rgba(212, 175, 55, 0.7));
+  }
+
   /* ====== TEXT ====== */
   .line-clamp-2 {
     display: -webkit-box;
