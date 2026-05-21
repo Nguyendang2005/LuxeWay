@@ -339,7 +339,20 @@ export const VehicleFormPage: React.FC = () => {
         lat: 34.0522,
         lng: -118.2437,
         timezone: 'America/Los_Angeles'
-      }
+      },
+      model: 'Custom',
+      deposit: 0,
+      totalReviews: 0,
+      totalBookings: 0,
+      isVerified: false,
+      isFeatured: false,
+      wishlistedBy: [],
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      addons: [],
+      instantBook: false,
+      deliveryAvailable: false,
+      deliveryFee: 0
     };
 
     // In a real app, we'd use vehicleService.create(newVehicle)
