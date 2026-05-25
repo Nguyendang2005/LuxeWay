@@ -13,6 +13,7 @@ import { VehicleCardSkeleton } from '@/components/ui/Skeleton';
 import type { Vehicle } from '@/types';
 import { formatCurrency, formatNumber } from '@/utils';
 import { staggerContainer, staggerItem, fadeUp, heroTextVariants } from '@/animations/variants';
+import logoImage from '@/image/logo.png';
 
 // ====== HERO SECTION ======
 const HeroSection: React.FC = () => {
@@ -828,13 +829,8 @@ const Footer: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-10 mb-12">
           {/* Brand */}
           <div className="lg:col-span-2">
-            <Link to="/" className="flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 bg-accent rounded-xl flex items-center justify-center">
-                <Car className="w-4 h-4 text-white" />
-              </div>
-              <span className="font-display text-2xl font-bold">
-                Luxe<span className="text-accent">Way</span>
-              </span>
+            <Link to="/" className="flex items-center gap-2 mb-4 logo-wrapper">
+              <img src={logoImage} alt="LuxeWay" className="logo-effect h-16 w-auto object-contain" />
             </Link>
             <p className="text-slate-400 text-sm leading-relaxed mb-6">
               Redefining luxury vehicle experiences globally. Precision, prestige, and performance — delivered to your door.
