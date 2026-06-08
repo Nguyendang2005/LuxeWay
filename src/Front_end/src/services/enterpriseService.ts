@@ -175,7 +175,7 @@ export const corporateService = {
   },
 
   async reviewBooking(bookingId: string, approved: boolean): Promise<CompanyBooking> {
-    const response = await apiClient.post<any>(`/corporate/bookings/${bookingId}/review?approved=${approved}`);
+    const response = await apiClient.post<any>(`/corporate/bookings/${bookingId}/review?approved=${approved}`, {});
     return response.data?.data;
   }
 };
@@ -213,7 +213,7 @@ export const auditService = {
   },
 
   async exportCsvUrl(userId?: string, action?: string, targetType?: string): Promise<string> {
-    let url = `${apiClient.defaults.baseURL}/admin/audit/export?`;
+    let url = `${apiClient.baseURL}/admin/audit/export?`;
     const token = localStorage.getItem('token'); // get token for security
     if (token) url += `access_token=${token}&`;
     if (userId) url += `userId=${userId}&`;
@@ -247,10 +247,10 @@ export const ownerAnalyticsService = {
   },
 
   async getPdfReportUrl(): Promise<string> {
-    return `${apiClient.defaults.baseURL}/owner/analytics/report/pdf`;
+    return `${apiClient.baseURL}/owner/analytics/report/pdf`;
   },
 
   async getExcelReportUrl(): Promise<string> {
-    return `${apiClient.defaults.baseURL}/owner/analytics/report/excel`;
+    return `${apiClient.baseURL}/owner/analytics/report/excel`;
   }
 };

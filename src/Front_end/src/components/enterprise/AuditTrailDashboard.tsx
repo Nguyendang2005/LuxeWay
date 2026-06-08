@@ -150,7 +150,7 @@ export const AuditTrailDashboard: React.FC = () => {
                   >
                     <td className="p-4 font-semibold text-slate-400 flex items-center gap-1.5">
                       <Clock className="w-3.5 h-3.5 text-slate-550 flex-shrink-0" />
-                      {formatDate(log.createdAt, 'full')}
+                      {formatDate(log.createdAt, 'long')}
                     </td>
                     <td className="p-4 font-bold text-white">{log.username || 'System'}</td>
                     <td className="p-4 text-slate-400 font-mono text-[10px]">{log.ipAddress || '127.0.0.1'}</td>

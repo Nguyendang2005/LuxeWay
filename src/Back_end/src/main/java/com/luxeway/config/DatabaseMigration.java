@@ -665,7 +665,15 @@ public class DatabaseMigration implements CommandLineRunner {
                 String[] blocks = sqlContent.split("(?:\r?\n){2,}");
                 for (String block : blocks) {
                     block = block.trim();
-                    if (!block.isEmpty() && !block.startsWith("--")) {
+                    while (block.startsWith("--")) {
+                        int nextNewLine = block.indexOf('\n');
+                        if (nextNewLine == -1) {
+                            block = "";
+                            break;
+                        }
+                        block = block.substring(nextNewLine + 1).trim();
+                    }
+                    if (!block.isEmpty()) {
                         try {
                             jdbcTemplate.execute(block);
                         } catch (Exception ex) {
