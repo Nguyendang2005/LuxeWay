@@ -139,7 +139,8 @@ export const carService = {
 
   async getById(id: string): Promise<Vehicle | null> {
     try {
-      const response = await apiClient.get<any>(`/cars/${id}`);
+      const endpoint = id.startsWith('VC-') ? `/vehicles/${id}` : `/cars/${id}`;
+      const response = await apiClient.get<any>(endpoint);
       return response.vehicle ? mapCar(response.vehicle) : null;
     } catch (error) {
       console.error(`Failed to get car ${id}`, error);

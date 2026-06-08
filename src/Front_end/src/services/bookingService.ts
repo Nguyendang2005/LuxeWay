@@ -40,15 +40,17 @@ const mapBooking = (b: any): Booking => {
 export const bookingService = {
   async getByUser(userId: string): Promise<Booking[]> {
     try {
-      const [carRes, motoRes] = await Promise.all([
+      const [carRes, motoRes, genRes] = await Promise.all([
         apiClient.get<any>('/cars/bookings').catch(() => ({ bookings: [] })),
-        apiClient.get<any>('/motorbikes/bookings').catch(() => ({ bookings: [] }))
+        apiClient.get<any>('/motorbikes/bookings').catch(() => ({ bookings: [] })),
+        apiClient.get<any>('/bookings').catch(() => ({ data: { content: [] } }))
       ]);
       
       const carList = carRes.bookings || carRes.content || [];
       const motoList = motoRes.bookings || motoRes.content || [];
+      const genList = genRes.bookings || genRes.content || genRes.data?.content || [];
       
-      const combined = [...carList, ...motoList];
+      const combined = [...carList, ...motoList, ...genList];
       combined.sort((a: any, b: any) => {
         const dateA = a.createdAt ? new Date(a.createdAt).getTime() : 0;
         const dateB = b.createdAt ? new Date(b.createdAt).getTime() : 0;
@@ -64,15 +66,17 @@ export const bookingService = {
 
   async getByOwner(ownerId: string): Promise<Booking[]> {
     try {
-      const [carRes, motoRes] = await Promise.all([
+      const [carRes, motoRes, genRes] = await Promise.all([
         apiClient.get<any>('/cars/bookings/owner').catch(() => ({ bookings: [] })),
-        apiClient.get<any>('/motorbikes/bookings/owner').catch(() => ({ bookings: [] }))
+        apiClient.get<any>('/motorbikes/bookings/owner').catch(() => ({ bookings: [] })),
+        apiClient.get<any>('/bookings/owner').catch(() => ({ data: { content: [] } }))
       ]);
       
       const carList = carRes.bookings || carRes.content || [];
       const motoList = motoRes.bookings || motoRes.content || [];
+      const genList = genRes.bookings || genRes.content || genRes.data?.content || [];
       
-      const combined = [...carList, ...motoList];
+      const combined = [...carList, ...motoList, ...genList];
       combined.sort((a: any, b: any) => {
         const dateA = a.createdAt ? new Date(a.createdAt).getTime() : 0;
         const dateB = b.createdAt ? new Date(b.createdAt).getTime() : 0;
@@ -109,7 +113,8 @@ export const bookingService = {
   },
 
   async create(wizardState: BookingWizardState, renterId: string, vehicleType?: 'car' | 'motorbike', extras?: any): Promise<Booking> {
-    if (vehicleType === 'car') {
+    const isGeneralVehicle = wizardState.vehicleId?.startsWith('VM-') || wizardState.vehicleId?.startsWith('VC-');
+    if (vehicleType === 'car' && !isGeneralVehicle) {
       const payload = {
         carId: wizardState.vehicleId,
         startDate: wizardState.startDate,
@@ -128,7 +133,7 @@ export const bookingService = {
       const booking = response.booking || response.data || response;
       if (!booking || !booking.id) throw new Error(response.message || 'Failed to create car booking');
       return mapBooking(booking);
-    } else if (vehicleType === 'motorbike') {
+    } else if (vehicleType === 'motorbike' && !isGeneralVehicle) {
       const payload = {
         motorbikeId: wizardState.vehicleId,
         startDate: wizardState.startDate,

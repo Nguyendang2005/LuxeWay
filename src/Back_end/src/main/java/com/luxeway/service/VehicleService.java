@@ -29,6 +29,7 @@ public class VehicleService {
     private final VehicleRepository vehicleRepository;
     private final UserRepository userRepository;
     private final EmailService emailService;
+    private final TranslationService translationService;
 
     // ====== Get all (with filters) ======
 
@@ -341,21 +342,22 @@ public class VehicleService {
     // ====== Map to response DTO ======
 
     public VehicleDTOs.VehicleResponse toResponse(Vehicle v) {
+        String lang = translationService.getCurrentLanguageCode();
         VehicleDTOs.VehicleResponse r = new VehicleDTOs.VehicleResponse();
         r.setId(v.getId());
-        r.setName(v.getName());
+        r.setName(translationService.translateVehicle(v.getId(), lang, v.getName(), v.getDescription(), v.getCity(), v.getAddress(), "name"));
         r.setBrand(v.getBrand());
         r.setModel(v.getModel());
         r.setYear(v.getYear());
         r.setCategory(v.getCategory().name().toLowerCase());
-        r.setDescription(v.getDescription());
+        r.setDescription(translationService.translateVehicle(v.getId(), lang, v.getName(), v.getDescription(), v.getCity(), v.getAddress(), "description"));
         r.setThumbnailUrl(v.getThumbnailUrl());
         r.setPricePerDay(v.getPricePerDay());
         r.setPricePerWeek(v.getPricePerWeek());
         r.setDeposit(v.getDeposit());
-        r.setCity(v.getCity());
+        r.setCity(translationService.translateVehicle(v.getId(), lang, v.getName(), v.getDescription(), v.getCity(), v.getAddress(), "city"));
         r.setCountry(v.getCountry());
-        r.setAddress(v.getAddress());
+        r.setAddress(translationService.translateVehicle(v.getId(), lang, v.getName(), v.getDescription(), v.getCity(), v.getAddress(), "address"));
         r.setSeats(v.getSeats());
         r.setDoors(v.getDoors());
         r.setHorsepower(v.getHorsepower());

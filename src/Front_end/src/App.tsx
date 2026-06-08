@@ -13,6 +13,8 @@ import { useT, translateNotification } from '@/i18n/translations';
 
 // Layouts
 import RootLayout from '@/layouts/RootLayout';
+import { RewardsDashboard } from '@/components/enterprise/RewardsDashboard';
+import { CorporateDashboard } from '@/components/enterprise/CorporateDashboard';
 
 
 // Pages (Eager loaded - critical path)
@@ -569,6 +571,8 @@ const App: React.FC = () => {
             <Route path="wallet" element={<LuxeWalletPage />} />
             <Route path="payments" element={<PaymentHistoryPage />} />
             <Route path="settings" element={<SettingsPage />} />
+            <Route path="rewards" element={<RewardsDashboard />} />
+            <Route path="corporate" element={<CorporateDashboard />} />
           </Route>
 
           {/* Owner Dashboard */}

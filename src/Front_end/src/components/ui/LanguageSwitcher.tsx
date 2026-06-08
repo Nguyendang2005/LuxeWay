@@ -15,6 +15,7 @@ const languages = [
   { code: 'zh' as Language, name: '中文', flag: '🇨🇳' },
   { code: 'fr' as Language, name: 'Français', flag: '🇫🇷' },
   { code: 'de' as Language, name: 'Deutsch', flag: '🇩🇪' },
+  { code: 'es' as Language, name: 'Español', flag: '🇪🇸' },
 ];
 
 export const LanguageSwitcher: React.FC<{ className?: string }> = ({ className = '' }) => {

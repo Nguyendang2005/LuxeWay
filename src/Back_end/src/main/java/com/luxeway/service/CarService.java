@@ -25,6 +25,7 @@ public class CarService {
     private final CarBrandRepository carBrandRepository;
     private final CarModelRepository carModelRepository;
     private final UserRepository userRepository;
+    private final TranslationService translationService;
 
     public Page<CarDTOs.CarResponse> searchCars(
             String city, Integer seats, String transmission, String fuelType,
@@ -130,9 +131,10 @@ public class CarService {
     }
 
     public CarDTOs.CarResponse toResponse(Car car) {
+        String lang = translationService.getCurrentLanguageCode();
         CarDTOs.CarResponse response = new CarDTOs.CarResponse();
         response.setId(car.getId());
-        response.setName(car.getName());
+        response.setName(translationService.translateCar(car.getId(), lang, car.getName(), null, "name"));
         response.setBrandName(car.getModel().getBrand().getName());
         response.setModelName(car.getModel().getName());
         response.setCategory(car.getModel().getCategory());

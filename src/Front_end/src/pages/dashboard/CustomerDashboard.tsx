@@ -5,7 +5,7 @@ import {
   LayoutDashboard, Calendar, Heart, Bell, User, Shield, FileText,
   CreditCard, Settings, LogOut, ChevronRight, Car, Star, TrendingUp,
   Package, Clock, CheckCircle, AlertCircle, X, Menu, Eye, EyeOff, Users, Wallet,
-  Loader2, Globe
+  Loader2, Globe, Gift, Building2
 } from 'lucide-react';
 
 import { useAuthStore, useUIStore } from '@/store';
@@ -25,6 +25,7 @@ const CustomerSidebar: React.FC = () => {
   const navigate = useNavigate();
   const { user, logout } = useAuthStore();
   const { sidebarOpen, setSidebarOpen } = useUIStore();
+  const language = useUIStore((s: any) => s.language) || 'en';
   const t = useT();
 
   const customerLinks = [
@@ -35,6 +36,30 @@ const CustomerSidebar: React.FC = () => {
     { href: '/dashboard/payments', icon: CreditCard, label: t.dashboard.payments },
     { href: '/dashboard/documents', icon: FileText, label: t.dashboard.documents },
     { href: '/dashboard/reviews', icon: Star, label: t.dashboard.myReviews },
+    {
+      href: '/dashboard/rewards',
+      icon: Gift,
+      label: language === 'vi' ? 'Đổi Thưởng' :
+             language === 'ja' ? 'ロイヤルティ特典' :
+             language === 'ko' ? '로열티 리워드' :
+             language === 'zh' ? '会员积分奖励' :
+             language === 'fr' ? 'Récompenses' :
+             language === 'de' ? 'Treueprämien' :
+             language === 'es' ? 'Premios' :
+             'Loyalty Rewards'
+    },
+    {
+      href: '/dashboard/corporate',
+      icon: Building2,
+      label: language === 'vi' ? 'Cổng Doanh Nghiệp' :
+             language === 'ja' ? '企業ポータル' :
+             language === 'ko' ? '기업 포탈' :
+             language === 'zh' ? '企业门户' :
+             language === 'fr' ? 'Portail Entreprise' :
+             language === 'de' ? 'Unternehmensportal' :
+             language === 'es' ? 'Portal Corporativo' :
+             'Corporate Portal'
+    },
     { href: '/messages', icon: Bell, label: t.nav.messages },
     { href: '/dashboard/notifications', icon: Heart, label: t.dashboard.notifications },
     { href: '/dashboard/profile', icon: User, label: t.dashboard.profile },

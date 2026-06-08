@@ -452,5 +452,234 @@ public class DatabaseMigration implements CommandLineRunner {
                 log.error("Failed to create promotions table: {}", ex.getMessage());
             }
         }
+
+        // ====== 6. MULTILINGUAL TRANSLATION TABLES & INDEXES ======
+        // preferred_language check on users
+        try {
+            jdbcTemplate.execute("ALTER TABLE users ADD preferred_language NVARCHAR(10) NULL DEFAULT 'en'");
+            log.info("Successfully checked/added preferred_language to users table (SQL Server)");
+        } catch (Exception e) {
+            try {
+                jdbcTemplate.execute("ALTER TABLE users ADD COLUMN preferred_language VARCHAR(10) NULL DEFAULT 'en'");
+                log.info("Successfully checked/added preferred_language to users table (Standard)");
+            } catch (Exception ex) {
+                log.debug("preferred_language column already exists or alter failed: {}", ex.getMessage());
+            }
+        }
+
+        // vehicle_translations
+        try {
+            jdbcTemplate.execute("IF OBJECT_ID('vehicle_translations', 'U') IS NULL " +
+                    "BEGIN " +
+                    "    CREATE TABLE vehicle_translations (" +
+                    "        id NVARCHAR(36) PRIMARY KEY, " +
+                    "        vehicle_id NVARCHAR(36) NOT NULL, " +
+                    "        language_code NVARCHAR(10) NOT NULL, " +
+                    "        name NVARCHAR(200) NOT NULL, " +
+                    "        description NVARCHAR(MAX) NULL, " +
+                    "        city NVARCHAR(100) NULL, " +
+                    "        address NVARCHAR(MAX) NULL, " +
+                    "        FOREIGN KEY (vehicle_id) REFERENCES vehicles(id) ON DELETE CASCADE, " +
+                    "        CONSTRAINT UQ_vehicle_translations UNIQUE (vehicle_id, language_code)" +
+                    "    ); " +
+                    "    CREATE INDEX IX_vehicle_language ON vehicle_translations (vehicle_id, language_code); " +
+                    "END");
+            log.info("Successfully created table: vehicle_translations");
+        } catch (Exception e) {
+            log.debug("vehicle_translations table creation failed or already exists: {}", e.getMessage());
+            try {
+                jdbcTemplate.execute("CREATE TABLE IF NOT EXISTS vehicle_translations (" +
+                        "id VARCHAR(36) PRIMARY KEY, " +
+                        "vehicle_id VARCHAR(36) NOT NULL, " +
+                        "language_code VARCHAR(10) NOT NULL, " +
+                        "name VARCHAR(200) NOT NULL, " +
+                        "description TEXT NULL, " +
+                        "city VARCHAR(100) NULL, " +
+                        "address TEXT NULL, " +
+                        "FOREIGN KEY (vehicle_id) REFERENCES vehicles(id) ON DELETE CASCADE, " +
+                        "UNIQUE (vehicle_id, language_code)" +
+                        ")");
+                jdbcTemplate.execute("CREATE INDEX IF NOT EXISTS IX_vehicle_language ON vehicle_translations (vehicle_id, language_code)");
+                log.info("Successfully created table: vehicle_translations (Standard)");
+            } catch (Exception ex) {
+                log.error("Failed to create vehicle_translations table: {}", ex.getMessage());
+            }
+        }
+
+        // car_translations
+        try {
+            jdbcTemplate.execute("IF OBJECT_ID('car_translations', 'U') IS NULL " +
+                    "BEGIN " +
+                    "    CREATE TABLE car_translations (" +
+                    "        id NVARCHAR(36) PRIMARY KEY, " +
+                    "        car_id NVARCHAR(36) NOT NULL, " +
+                    "        language_code NVARCHAR(10) NOT NULL, " +
+                    "        name NVARCHAR(200) NOT NULL, " +
+                    "        description NVARCHAR(MAX) NULL, " +
+                    "        FOREIGN KEY (car_id) REFERENCES cars(id) ON DELETE CASCADE, " +
+                    "        CONSTRAINT UQ_car_translations UNIQUE (car_id, language_code)" +
+                    "    ); " +
+                    "    CREATE INDEX IX_car_language ON car_translations (car_id, language_code); " +
+                    "END");
+            log.info("Successfully created table: car_translations");
+        } catch (Exception e) {
+            log.debug("car_translations table creation failed or already exists: {}", e.getMessage());
+            try {
+                jdbcTemplate.execute("CREATE TABLE IF NOT EXISTS car_translations (" +
+                        "id VARCHAR(36) PRIMARY KEY, " +
+                        "car_id VARCHAR(36) NOT NULL, " +
+                        "language_code VARCHAR(10) NOT NULL, " +
+                        "name VARCHAR(200) NOT NULL, " +
+                        "description TEXT NULL, " +
+                        "FOREIGN KEY (car_id) REFERENCES cars(id) ON DELETE CASCADE, " +
+                        "UNIQUE (car_id, language_code)" +
+                        ")");
+                jdbcTemplate.execute("CREATE INDEX IF NOT EXISTS IX_car_language ON car_translations (car_id, language_code)");
+                log.info("Successfully created table: car_translations (Standard)");
+            } catch (Exception ex) {
+                log.error("Failed to create car_translations table: {}", ex.getMessage());
+            }
+        }
+
+        // motorbike_translations
+        try {
+            jdbcTemplate.execute("IF OBJECT_ID('motorbike_translations', 'U') IS NULL " +
+                    "BEGIN " +
+                    "    CREATE TABLE motorbike_translations (" +
+                    "        id NVARCHAR(36) PRIMARY KEY, " +
+                    "        motorbike_id NVARCHAR(36) NOT NULL, " +
+                    "        language_code NVARCHAR(10) NOT NULL, " +
+                    "        name NVARCHAR(200) NOT NULL, " +
+                    "        description NVARCHAR(MAX) NULL, " +
+                    "        FOREIGN KEY (motorbike_id) REFERENCES motorbikes(id) ON DELETE CASCADE, " +
+                    "        CONSTRAINT UQ_motorbike_translations UNIQUE (motorbike_id, language_code)" +
+                    "    ); " +
+                    "    CREATE INDEX IX_motorbike_language ON motorbike_translations (motorbike_id, language_code); " +
+                    "END");
+            log.info("Successfully created table: motorbike_translations");
+        } catch (Exception e) {
+            log.debug("motorbike_translations table creation failed or already exists: {}", e.getMessage());
+            try {
+                jdbcTemplate.execute("CREATE TABLE IF NOT EXISTS motorbike_translations (" +
+                        "id VARCHAR(36) PRIMARY KEY, " +
+                        "motorbike_id VARCHAR(36) NOT NULL, " +
+                        "language_code VARCHAR(10) NOT NULL, " +
+                        "name VARCHAR(200) NOT NULL, " +
+                        "description TEXT NULL, " +
+                        "FOREIGN KEY (motorbike_id) REFERENCES motorbikes(id) ON DELETE CASCADE, " +
+                        "UNIQUE (motorbike_id, language_code)" +
+                        ")");
+                jdbcTemplate.execute("CREATE INDEX IF NOT EXISTS IX_motorbike_language ON motorbike_translations (motorbike_id, language_code)");
+                log.info("Successfully created table: motorbike_translations (Standard)");
+            } catch (Exception ex) {
+                log.error("Failed to create motorbike_translations table: {}", ex.getMessage());
+            }
+        }
+
+        // review_translations
+        try {
+            jdbcTemplate.execute("IF OBJECT_ID('review_translations', 'U') IS NULL " +
+                    "BEGIN " +
+                    "    CREATE TABLE review_translations (" +
+                    "        id NVARCHAR(36) PRIMARY KEY, " +
+                    "        review_id NVARCHAR(36) NOT NULL, " +
+                    "        language_code NVARCHAR(10) NOT NULL, " +
+                    "        comment NVARCHAR(MAX) NOT NULL, " +
+                    "        FOREIGN KEY (review_id) REFERENCES reviews(id) ON DELETE CASCADE, " +
+                    "        CONSTRAINT UQ_review_translations UNIQUE (review_id, language_code)" +
+                    "    ); " +
+                    "    CREATE INDEX IX_review_language ON review_translations (review_id, language_code); " +
+                    "END");
+            log.info("Successfully created table: review_translations");
+        } catch (Exception e) {
+            log.debug("review_translations table creation failed or already exists: {}", e.getMessage());
+            try {
+                jdbcTemplate.execute("CREATE TABLE IF NOT EXISTS review_translations (" +
+                        "id VARCHAR(36) PRIMARY KEY, " +
+                        "review_id VARCHAR(36) NOT NULL, " +
+                        "language_code VARCHAR(10) NOT NULL, " +
+                        "comment TEXT NOT NULL, " +
+                        "FOREIGN KEY (review_id) REFERENCES reviews(id) ON DELETE CASCADE, " +
+                        "UNIQUE (review_id, language_code)" +
+                        ")");
+                jdbcTemplate.execute("CREATE INDEX IF NOT EXISTS IX_review_language ON review_translations (review_id, language_code)");
+                log.info("Successfully created table: review_translations (Standard)");
+            } catch (Exception ex) {
+                log.error("Failed to create review_translations table: {}", ex.getMessage());
+            }
+        }
+
+        // notification_translations
+        try {
+            jdbcTemplate.execute("IF OBJECT_ID('notification_translations', 'U') IS NULL " +
+                    "BEGIN " +
+                    "    CREATE TABLE notification_translations (" +
+                    "        id NVARCHAR(36) PRIMARY KEY, " +
+                    "        notification_id NVARCHAR(36) NOT NULL, " +
+                    "        language_code NVARCHAR(10) NOT NULL, " +
+                    "        title NVARCHAR(255) NOT NULL, " +
+                    "        body NVARCHAR(MAX) NOT NULL, " +
+                    "        FOREIGN KEY (notification_id) REFERENCES notifications(id) ON DELETE CASCADE, " +
+                    "        CONSTRAINT UQ_notification_translations UNIQUE (notification_id, language_code)" +
+                    "    ); " +
+                    "    CREATE INDEX IX_notification_language ON notification_translations (notification_id, language_code); " +
+                    "END");
+            log.info("Successfully created table: notification_translations");
+        } catch (Exception e) {
+            log.debug("notification_translations table creation failed or already exists: {}", e.getMessage());
+            try {
+                jdbcTemplate.execute("CREATE TABLE IF NOT EXISTS notification_translations (" +
+                        "id VARCHAR(36) PRIMARY KEY, " +
+                        "notification_id VARCHAR(36) NOT NULL, " +
+                        "language_code VARCHAR(10) NOT NULL, " +
+                        "title VARCHAR(255) NOT NULL, " +
+                        "body TEXT NOT NULL, " +
+                        "FOREIGN KEY (notification_id) REFERENCES notifications(id) ON DELETE CASCADE, " +
+                        "UNIQUE (notification_id, language_code)" +
+                        ")");
+                jdbcTemplate.execute("CREATE INDEX IF NOT EXISTS IX_notification_language ON notification_translations (notification_id, language_code)");
+                log.info("Successfully created table: notification_translations (Standard)");
+            } catch (Exception ex) {
+                log.error("Failed to create notification_translations table: {}", ex.getMessage());
+            }
+        }
+        
+        // ====== 7. ENTERPRISE SCHEMA MIGRATIONS (PHASES 1-10) ======
+        try {
+            String sqlContent = null;
+            java.io.File file = new java.io.File("src/Back_end/src/main/resources/schema-enterprise.sql");
+            if (file.exists()) {
+                log.info("Loading schema-enterprise.sql from file system...");
+                sqlContent = new String(java.nio.file.Files.readAllBytes(file.toPath()), java.nio.charset.StandardCharsets.UTF_8);
+            } else {
+                log.info("Loading schema-enterprise.sql from classpath...");
+                org.springframework.core.io.ClassPathResource resource = new org.springframework.core.io.ClassPathResource("schema-enterprise.sql");
+                if (resource.exists()) {
+                    byte[] data = org.springframework.util.FileCopyUtils.copyToByteArray(resource.getInputStream());
+                    sqlContent = new String(data, java.nio.charset.StandardCharsets.UTF_8);
+                }
+            }
+
+            if (sqlContent != null) {
+                // Split by double newlines or run as blocks
+                String[] blocks = sqlContent.split("(?:\r?\n){2,}");
+                for (String block : blocks) {
+                    block = block.trim();
+                    if (!block.isEmpty() && !block.startsWith("--")) {
+                        try {
+                            jdbcTemplate.execute(block);
+                        } catch (Exception ex) {
+                            log.warn("Error executing migration block: {} - Error: {}", 
+                                     block.substring(0, Math.min(block.length(), 60)) + "...", ex.getMessage());
+                        }
+                    }
+                }
+                log.info("Successfully completed schema-enterprise.sql database migration.");
+            } else {
+                log.warn("schema-enterprise.sql not found!");
+            }
+        } catch (Exception e) {
+            log.error("Error running schema-enterprise.sql: {}", e.getMessage(), e);
+        }
     }
 }

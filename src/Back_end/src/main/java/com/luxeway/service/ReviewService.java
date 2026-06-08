@@ -25,6 +25,7 @@ public class ReviewService {
     private final ReviewRepository reviewRepository;
     private final BookingRepository bookingRepository;
     private final VehicleRepository vehicleRepository;
+    private final TranslationService translationService;
 
     // ====== Create Review ======
 
@@ -210,6 +211,7 @@ public class ReviewService {
     // ====== DTO Mapping ======
 
     public ReviewDTOs.ReviewResponse toResponse(Review r) {
+        String lang = translationService.getCurrentLanguageCode();
         ReviewDTOs.ReviewResponse resp = new ReviewDTOs.ReviewResponse();
         resp.setId(r.getId());
         resp.setVehicleId(r.getVehicle() != null ? r.getVehicle().getId() : null);
@@ -220,7 +222,7 @@ public class ReviewService {
         resp.setCommunication(r.getCommunication());
         resp.setValueRating(r.getValueRating());
         resp.setAverageRating(r.getAverageRating());
-        resp.setComment(r.getComment());
+        resp.setComment(translationService.translateReview(r.getId(), lang, r.getComment()));
         resp.setOwnerResponse(r.getOwnerResponse());
         resp.setHelpful(r.getHelpful());
         resp.setCreatedAt(r.getCreatedAt() != null ? r.getCreatedAt().toString() : null);

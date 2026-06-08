@@ -30,6 +30,7 @@ public class InvoiceService {
     private final InvoiceRepository invoiceRepository;
     private final BookingRepository bookingRepository;
     private final EmailService emailService;
+    private final TranslationService translationService;
 
     @Transactional
     public Invoice generateInvoiceForBooking(String bookingId) {
@@ -115,6 +116,10 @@ public class InvoiceService {
 
         User renter = invoice.getUser();
         User owner = booking.getOwner();
+        String lang = renter.getPreferredLanguage();
+        if (lang == null || lang.trim().isEmpty()) {
+            lang = "en";
+        }
 
         Document document = new Document(PageSize.A4, 36, 36, 54, 36);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -140,19 +145,20 @@ public class InvoiceService {
         Paragraph brandName = new Paragraph("LuxeWay", titleFont);
         brandName.setSpacingAfter(4);
         leftCell.addElement(brandName);
-        leftCell.addElement(new Paragraph("Premium Vehicle Rentals", subtitleFont));
+        leftCell.addElement(new Paragraph(translationService.getMessage("invoice.subtitle", lang), subtitleFont));
         headerTable.addCell(leftCell);
 
         // Invoice Number & Date
         PdfPCell rightCell = new PdfPCell();
         rightCell.setBorder(Rectangle.NO_BORDER);
         rightCell.setHorizontalAlignment(Element.ALIGN_RIGHT);
-        Paragraph invNumberParagraph = new Paragraph("INVOICE: " + invoice.getInvoiceNumber(), FontFactory.getFont(FontFactory.HELVETICA_BOLD, 11, new BaseColor(79, 70, 229)));
+        Paragraph invNumberParagraph = new Paragraph(translationService.getMessage("invoice.number", lang, invoice.getInvoiceNumber()), FontFactory.getFont(FontFactory.HELVETICA_BOLD, 11, new BaseColor(79, 70, 229)));
         invNumberParagraph.setAlignment(Element.ALIGN_RIGHT);
         rightCell.addElement(invNumberParagraph);
         
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        Paragraph dateParagraph = new Paragraph("Issued Date: " + (invoice.getIssuedAt() != null ? invoice.getIssuedAt().format(dtf) : invoice.getCreatedAt().format(dtf)), subtitleFont);
+        String formattedDate = (invoice.getIssuedAt() != null ? invoice.getIssuedAt().format(dtf) : invoice.getCreatedAt().format(dtf));
+        Paragraph dateParagraph = new Paragraph(translationService.getMessage("invoice.issuedDate", lang, formattedDate), subtitleFont);
         dateParagraph.setAlignment(Element.ALIGN_RIGHT);
         rightCell.addElement(dateParagraph);
         headerTable.addCell(rightCell);
@@ -180,7 +186,7 @@ public class InvoiceService {
         // Bill To (Renter)
         PdfPCell renterCell = new PdfPCell();
         renterCell.setBorder(Rectangle.NO_BORDER);
-        renterCell.addElement(new Paragraph("BILL TO:", FontFactory.getFont(FontFactory.HELVETICA_BOLD, 10, new BaseColor(100, 116, 139))));
+        renterCell.addElement(new Paragraph(translationService.getMessage("invoice.billTo", lang), FontFactory.getFont(FontFactory.HELVETICA_BOLD, 10, new BaseColor(100, 116, 139))));
         renterCell.addElement(new Paragraph(renter.getFullName(), boldLabelFont));
         renterCell.addElement(new Paragraph("Email: " + renter.getEmail(), regularFont));
         renterCell.addElement(new Paragraph("Phone: " + (renter.getPhone() != null ? renter.getPhone() : "N/A"), regularFont));
@@ -189,7 +195,7 @@ public class InvoiceService {
         // Bill From (Owner/LuxeWay)
         PdfPCell ownerCell = new PdfPCell();
         ownerCell.setBorder(Rectangle.NO_BORDER);
-        ownerCell.addElement(new Paragraph("VEHICLE PROVIDER:", FontFactory.getFont(FontFactory.HELVETICA_BOLD, 10, new BaseColor(100, 116, 139))));
+        ownerCell.addElement(new Paragraph(translationService.getMessage("invoice.vehicleProvider", lang), FontFactory.getFont(FontFactory.HELVETICA_BOLD, 10, new BaseColor(100, 116, 139))));
         ownerCell.addElement(new Paragraph(owner != null ? owner.getFullName() : "LuxeWay Partner", boldLabelFont));
         ownerCell.addElement(new Paragraph("Email: " + (owner != null ? owner.getEmail() : "support@luxeway.com"), regularFont));
         ownerCell.addElement(new Paragraph("Phone: " + (owner != null && owner.getPhone() != null ? owner.getPhone() : "N/A"), regularFont));
@@ -204,19 +210,19 @@ public class InvoiceService {
         infoTable.setWidths(new float[]{1.5f, 1.5f, 1.0f});
 
         // Header cells
-        PdfPCell header1 = new PdfPCell(new Paragraph("Vehicle Details", boldLabelFont));
+        PdfPCell header1 = new PdfPCell(new Paragraph(translationService.getMessage("invoice.vehicleDetails", lang), boldLabelFont));
         header1.setBackgroundColor(new BaseColor(248, 250, 252));
         header1.setPadding(8);
         header1.setBorderColor(new BaseColor(226, 232, 240));
         infoTable.addCell(header1);
 
-        PdfPCell header2 = new PdfPCell(new Paragraph("Rental Period", boldLabelFont));
+        PdfPCell header2 = new PdfPCell(new Paragraph(translationService.getMessage("invoice.rentalPeriod", lang), boldLabelFont));
         header2.setBackgroundColor(new BaseColor(248, 250, 252));
         header2.setPadding(8);
         header2.setBorderColor(new BaseColor(226, 232, 240));
         infoTable.addCell(header2);
 
-        PdfPCell header3 = new PdfPCell(new Paragraph("Total Duration", boldLabelFont));
+        PdfPCell header3 = new PdfPCell(new Paragraph(translationService.getMessage("invoice.totalDuration", lang), boldLabelFont));
         header3.setBackgroundColor(new BaseColor(248, 250, 252));
         header3.setPadding(8);
         header3.setBorderColor(new BaseColor(226, 232, 240));
@@ -233,7 +239,7 @@ public class InvoiceService {
         cell2.setBorderColor(new BaseColor(226, 232, 240));
         infoTable.addCell(cell2);
 
-        PdfPCell cell3 = new PdfPCell(new Paragraph(booking.getTotalDays() + " Days", regularFont));
+        PdfPCell cell3 = new PdfPCell(new Paragraph(translationService.getMessage("invoice.days", lang, booking.getTotalDays()), regularFont));
         cell3.setPadding(8);
         cell3.setBorderColor(new BaseColor(226, 232, 240));
         infoTable.addCell(cell3);
@@ -247,13 +253,13 @@ public class InvoiceService {
         pricingTable.setWidths(new float[]{3.0f, 1.0f});
 
         // Headers
-        PdfPCell pHeaderLeft = new PdfPCell(new Paragraph("Description", boldLabelFont));
+        PdfPCell pHeaderLeft = new PdfPCell(new Paragraph(translationService.getMessage("invoice.description", lang), boldLabelFont));
         pHeaderLeft.setBackgroundColor(new BaseColor(248, 250, 252));
         pHeaderLeft.setPadding(8);
         pHeaderLeft.setBorderColor(new BaseColor(226, 232, 240));
         pricingTable.addCell(pHeaderLeft);
 
-        PdfPCell pHeaderRight = new PdfPCell(new Paragraph("Amount", boldLabelFont));
+        PdfPCell pHeaderRight = new PdfPCell(new Paragraph(translationService.getMessage("invoice.amount", lang), boldLabelFont));
         pHeaderRight.setBackgroundColor(new BaseColor(248, 250, 252));
         pHeaderRight.setPadding(8);
         pHeaderRight.setHorizontalAlignment(Element.ALIGN_RIGHT);
@@ -261,49 +267,50 @@ public class InvoiceService {
         pricingTable.addCell(pHeaderRight);
 
         // Daily Price Line
-        pricingTable.addCell(createBorderedCell("Rental Rate (" + formatPrice(booking.getPricePerDay()) + " / Day x " + booking.getTotalDays() + " Days)", regularFont, Rectangle.BOX));
-        pricingTable.addCell(createBorderedCell(formatPrice(booking.getBasePrice()), regularFont, Rectangle.BOX, Element.ALIGN_RIGHT));
+        String rateLabel = translationService.getMessage("invoice.rate", lang, formatPrice(booking.getPricePerDay(), lang), booking.getTotalDays());
+        pricingTable.addCell(createBorderedCell(rateLabel, regularFont, Rectangle.BOX));
+        pricingTable.addCell(createBorderedCell(formatPrice(booking.getBasePrice(), lang), regularFont, Rectangle.BOX, Element.ALIGN_RIGHT));
 
         // Delivery Fee (If present)
         if (booking.getDeliveryFee() != null && booking.getDeliveryFee().compareTo(BigDecimal.ZERO) > 0) {
-            pricingTable.addCell(createBorderedCell("Delivery Fee", regularFont, Rectangle.BOX));
-            pricingTable.addCell(createBorderedCell(formatPrice(booking.getDeliveryFee()), regularFont, Rectangle.BOX, Element.ALIGN_RIGHT));
+            pricingTable.addCell(createBorderedCell(translationService.getMessage("invoice.deliveryFee", lang), regularFont, Rectangle.BOX));
+            pricingTable.addCell(createBorderedCell(formatPrice(booking.getDeliveryFee(), lang), regularFont, Rectangle.BOX, Element.ALIGN_RIGHT));
         }
 
         // Addons (If present)
         if (booking.getAddonsTotal() != null && booking.getAddonsTotal().compareTo(BigDecimal.ZERO) > 0) {
-            pricingTable.addCell(createBorderedCell("Extra Add-ons Total", regularFont, Rectangle.BOX));
-            pricingTable.addCell(createBorderedCell(formatPrice(booking.getAddonsTotal()), regularFont, Rectangle.BOX, Element.ALIGN_RIGHT));
+            pricingTable.addCell(createBorderedCell(translationService.getMessage("invoice.addonsTotal", lang), regularFont, Rectangle.BOX));
+            pricingTable.addCell(createBorderedCell(formatPrice(booking.getAddonsTotal(), lang), regularFont, Rectangle.BOX, Element.ALIGN_RIGHT));
         }
 
         // Insurance Fee (If present)
         if (booking.getInsuranceFee() != null && booking.getInsuranceFee().compareTo(BigDecimal.ZERO) > 0) {
-            pricingTable.addCell(createBorderedCell("LuxeWay Direct Coverage Insurance", regularFont, Rectangle.BOX));
-            pricingTable.addCell(createBorderedCell(formatPrice(booking.getInsuranceFee()), regularFont, Rectangle.BOX, Element.ALIGN_RIGHT));
+            pricingTable.addCell(createBorderedCell(translationService.getMessage("invoice.insurance", lang), regularFont, Rectangle.BOX));
+            pricingTable.addCell(createBorderedCell(formatPrice(booking.getInsuranceFee(), lang), regularFont, Rectangle.BOX, Element.ALIGN_RIGHT));
         }
 
         // Service Fee
-        pricingTable.addCell(createBorderedCell("Platform Service Fee", regularFont, Rectangle.BOX));
-        pricingTable.addCell(createBorderedCell(formatPrice(booking.getServiceFee()), regularFont, Rectangle.BOX, Element.ALIGN_RIGHT));
+        pricingTable.addCell(createBorderedCell(translationService.getMessage("invoice.serviceFee", lang), regularFont, Rectangle.BOX));
+        pricingTable.addCell(createBorderedCell(formatPrice(booking.getServiceFee(), lang), regularFont, Rectangle.BOX, Element.ALIGN_RIGHT));
 
         // Taxes
-        pricingTable.addCell(createBorderedCell("VAT & Tax Summary", regularFont, Rectangle.BOX));
-        pricingTable.addCell(createBorderedCell(formatPrice(booking.getTaxes()), regularFont, Rectangle.BOX, Element.ALIGN_RIGHT));
+        pricingTable.addCell(createBorderedCell(translationService.getMessage("invoice.taxes", lang), regularFont, Rectangle.BOX));
+        pricingTable.addCell(createBorderedCell(formatPrice(booking.getTaxes(), lang), regularFont, Rectangle.BOX, Element.ALIGN_RIGHT));
 
         // Discount (If present)
         if (booking.getDiscount() != null && booking.getDiscount().compareTo(BigDecimal.ZERO) > 0) {
-            pricingTable.addCell(createBorderedCell("Promotion Discount", FontFactory.getFont(FontFactory.HELVETICA_BOLD, 10, new BaseColor(22, 163, 74)), Rectangle.BOX)); // Green 600
-            pricingTable.addCell(createBorderedCell("-" + formatPrice(booking.getDiscount()), FontFactory.getFont(FontFactory.HELVETICA_BOLD, 10, new BaseColor(22, 163, 74)), Rectangle.BOX, Element.ALIGN_RIGHT));
+            pricingTable.addCell(createBorderedCell(translationService.getMessage("invoice.discount", lang), FontFactory.getFont(FontFactory.HELVETICA_BOLD, 10, new BaseColor(22, 163, 74)), Rectangle.BOX)); // Green 600
+            pricingTable.addCell(createBorderedCell("-" + formatPrice(booking.getDiscount(), lang), FontFactory.getFont(FontFactory.HELVETICA_BOLD, 10, new BaseColor(22, 163, 74)), Rectangle.BOX, Element.ALIGN_RIGHT));
         }
 
         // Total
-        PdfPCell totalLabelCell = new PdfPCell(new Paragraph("TOTAL AMOUNT PAID", boldLabelFont));
+        PdfPCell totalLabelCell = new PdfPCell(new Paragraph(translationService.getMessage("invoice.total", lang), boldLabelFont));
         totalLabelCell.setBackgroundColor(new BaseColor(241, 245, 249)); // Slate 100
         totalLabelCell.setPadding(10);
         totalLabelCell.setBorderColor(new BaseColor(226, 232, 240));
         pricingTable.addCell(totalLabelCell);
 
-        PdfPCell totalValCell = new PdfPCell(new Paragraph(formatPrice(booking.getTotal()), totalFont));
+        PdfPCell totalValCell = new PdfPCell(new Paragraph(formatPrice(booking.getTotal(), lang), totalFont));
         totalValCell.setBackgroundColor(new BaseColor(241, 245, 249));
         totalValCell.setPadding(10);
         totalValCell.setHorizontalAlignment(Element.ALIGN_RIGHT);
@@ -314,12 +321,12 @@ public class InvoiceService {
         document.add(pricingTable);
 
         // 5. INSTRUCTIONS / THANK YOU NOTE
-        Paragraph paymentInfo = new Paragraph("Payment Status: SUCCESSFUL (" + invoice.getStatus() + ")", FontFactory.getFont(FontFactory.HELVETICA_BOLD, 11, new BaseColor(22, 163, 74)));
+        Paragraph paymentInfo = new Paragraph(translationService.getMessage("invoice.paymentStatus", lang, invoice.getStatus()), FontFactory.getFont(FontFactory.HELVETICA_BOLD, 11, new BaseColor(22, 163, 74)));
         paymentInfo.setAlignment(Element.ALIGN_CENTER);
         paymentInfo.setSpacingAfter(10f);
         document.add(paymentInfo);
         
-        Paragraph thankYou = new Paragraph("Thank you for using LuxeWay! Drive safely and enjoy your journey.", subtitleFont);
+        Paragraph thankYou = new Paragraph(translationService.getMessage("invoice.thankYou", lang), subtitleFont);
         thankYou.setAlignment(Element.ALIGN_CENTER);
         document.add(thankYou);
 
@@ -340,8 +347,27 @@ public class InvoiceService {
         return cell;
     }
 
-    private String formatPrice(BigDecimal val) {
-        if (val == null) return "0 VND";
-        return String.format("%,.0f VND", val);
+    private String formatPrice(BigDecimal val, String langCode) {
+        if (val == null) val = BigDecimal.ZERO;
+        if (langCode == null) langCode = "en";
+        double vndAmount = val.doubleValue();
+        switch (langCode.toLowerCase()) {
+            case "vi":
+                return String.format("%,.0f ₫", vndAmount).replace(',', '.');
+            case "en":
+                return String.format("$%,.2f", vndAmount / 25400.0);
+            case "ja":
+                return String.format("¥%,.0f", vndAmount / 162.0);
+            case "ko":
+                return String.format("₩%,.0f", vndAmount / 18.5);
+            case "zh":
+                return String.format("¥%,.2f", vndAmount / 3500.0);
+            case "fr":
+            case "de":
+            case "es":
+                return String.format("%,.2f €", vndAmount / 27500.0).replace(',', ' ').replace('.', ',');
+            default:
+                return String.format("$%,.2f", vndAmount / 25400.0);
+        }
     }
 }

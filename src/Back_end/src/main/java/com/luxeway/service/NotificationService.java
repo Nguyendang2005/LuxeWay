@@ -23,6 +23,7 @@ public class NotificationService {
     private final NotificationRepository notificationRepository;
     private final UserRepository userRepository;
     private final SimpMessagingTemplate messagingTemplate;
+    private final TranslationService translationService;
 
     // ====== Get notifications for user ======
 
@@ -96,11 +97,12 @@ public class NotificationService {
     // ====== DTO Mapping ======
 
     public NotificationDTOs.NotificationResponse toResponse(Notification n) {
+        String lang = translationService.getCurrentLanguageCode();
         NotificationDTOs.NotificationResponse resp = new NotificationDTOs.NotificationResponse();
         resp.setId(n.getId());
         resp.setType(n.getType());
-        resp.setTitle(n.getTitle());
-        resp.setBody(n.getBody());
+        resp.setTitle(translationService.translateNotification(n.getId(), lang, n.getTitle(), n.getBody(), "title"));
+        resp.setBody(translationService.translateNotification(n.getId(), lang, n.getTitle(), n.getBody(), "body"));
         resp.setIcon(n.getIcon());
         resp.setLink(n.getLink());
         resp.setIsRead(n.getIsRead());

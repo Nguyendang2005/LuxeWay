@@ -137,7 +137,8 @@ export const motorbikeService = {
 
   async getById(id: string): Promise<Vehicle | null> {
     try {
-      const response = await apiClient.get<any>(`/motorbikes/${id}`);
+      const endpoint = id.startsWith('VM-') ? `/vehicles/${id}` : `/motorbikes/${id}`;
+      const response = await apiClient.get<any>(endpoint);
       return response.vehicle ? mapMotorbike(response.vehicle) : null;
     } catch (error) {
       console.error(`Failed to get motorbike ${id}`, error);

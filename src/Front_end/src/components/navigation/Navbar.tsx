@@ -13,13 +13,15 @@ import { useT } from '@/i18n/translations';
 import logoImage from '@/image/logo.png';
 
 
-// ====== LANGUAGE LABELS ======
 const LANGS = [
   { code: 'en' as const, label: 'English', flag: '🇺🇸' },
   { code: 'vi' as const, label: 'Tiếng Việt', flag: '🇻🇳' },
   { code: 'ja' as const, label: '日本語', flag: '🇯🇵' },
   { code: 'ko' as const, label: '한국어', flag: '🇰🇷' },
   { code: 'zh' as const, label: '中文', flag: '🇨🇳' },
+  { code: 'fr' as const, label: 'Français', flag: '🇫🇷' },
+  { code: 'de' as const, label: 'Deutsch', flag: '🇩🇪' },
+  { code: 'es' as const, label: 'Español', flag: '🇪🇸' },
 ];
 
 

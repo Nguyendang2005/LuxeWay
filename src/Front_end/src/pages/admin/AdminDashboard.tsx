@@ -19,6 +19,7 @@ import { paymentService } from '@/services/bookingService';
 import { useToast } from '@/components/ui/Toast';
 import { useUIStore, useAuthStore } from '@/store';
 import { useT } from '@/i18n/translations';
+import { AuditTrailDashboard } from '@/components/enterprise/AuditTrailDashboard';
 
 const COLORS = ['#EAB308', '#6366F1', '#10B981', '#A855F7', '#06B6D4', '#EC4899'];
 
@@ -1864,71 +1865,7 @@ const AdminDashboard: React.FC = () => {
 
               {/* ============ TABS: LOGS (TIMELINE ENRICHED VIEW) ============ */}
               {activeTab === 'logs' && (
-                <div className="space-y-6">
-                  <div>
-                    <h2 className={cn("font-black text-xl tracking-tight", isDark ? "text-white" : "text-slate-855")}>Security Audit Logs Timeline</h2>
-                    <p className="text-[9px] font-black text-slate-450 dark:text-slate-500 uppercase tracking-widest mt-1">Chronological record of administrative adjustments, KYC checks, and payments approvals</p>
-                  </div>
-
-                  <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 items-start">
-                    {/* Log Filters Sidebar */}
-                    <div className={cn("border rounded-[2rem] p-6 shadow-2xl flex flex-col gap-4", isDark ? "bg-slate-900/60 border-slate-800/80" : "bg-white border-slate-200/60")}>
-                      <h3 className="font-black text-xs uppercase tracking-widest text-slate-450 border-b dark:border-slate-850 pb-3">Event Categories</h3>
-                      <div className="space-y-3">
-                        {Object.keys(logFilters).map(key => (
-                          <label key={key} className="flex items-center gap-3.5 cursor-pointer text-xs font-black uppercase tracking-wider text-slate-300">
-                            <input 
-                              type="checkbox"
-                              checked={(logFilters as any)[key]}
-                              onChange={e => setLogFilters(prev => ({ ...prev, [key]: e.target.checked }))}
-                              className="w-4 h-4 rounded-md border border-slate-700 bg-[#0c111e] text-indigo-500 focus:ring-indigo-500"
-                            />
-                            <span>{key} Actions</span>
-                          </label>
-                        ))}
-                      </div>
-                    </div>
-
-                    {/* Timeline List */}
-                    <div className={cn("lg:col-span-3 border rounded-[2rem] p-6.5 shadow-2xl relative overflow-hidden", isDark ? "bg-slate-900/60 border-slate-800/80" : "bg-white border-slate-200/60")}>
-                      <h3 className="font-black text-xs uppercase tracking-widest text-slate-450 border-b dark:border-slate-850 pb-4 mb-6">Activity Timeline</h3>
-                      <div className="relative pl-6 space-y-6">
-                        {/* Timeline center line */}
-                        <div className="absolute left-2.5 top-2 bottom-2 w-0.5 bg-slate-800/80" />
-
-                        {filteredLogs.map(log => {
-                          let markerColor = 'bg-slate-700 text-slate-400';
-                          if (log.action.includes('APPROVE') || log.action.includes('VERIFY')) markerColor = 'bg-emerald-500/10 text-emerald-505 border border-emerald-500/20';
-                          else if (log.action.includes('REJECT') || log.action.includes('SUSPEND')) markerColor = 'bg-red-500/10 text-red-500 border border-red-500/20';
-                          else if (log.action.includes('REFUND')) markerColor = 'bg-purple-500/10 text-purple-500 border border-purple-500/20';
-
-                          return (
-                            <div key={log.id} className="relative flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                              {/* Dot marker */}
-                              <div className={cn("absolute -left-6.5 w-6 h-6 rounded-full flex items-center justify-center font-bold text-[9px] shadow-sm", markerColor)}>
-                                •
-                              </div>
-                              <div className="space-y-1">
-                                <div className="flex items-center gap-2.5">
-                                  <span className="text-[9px] font-black bg-slate-800 text-slate-400 border dark:border-slate-800 px-2 py-0.5 rounded-lg">{log.action}</span>
-                                  <span className="text-xs font-black text-indigo-505">#{log.id}</span>
-                                </div>
-                                <p className="text-xs font-bold text-slate-200">{log.admin} updated <strong className="text-slate-100">{log.target}</strong></p>
-                              </div>
-                              <div className="text-left sm:text-right flex flex-col items-start sm:items-end gap-1 text-[10px] text-slate-500 font-semibold">
-                                <span className="flex items-center gap-1.5">
-                                  <Clock className="w-3.5 h-3.5 text-slate-500" />
-                                  {formatDate(log.time, 'relative')} · {formatDate(log.time)}
-                                </span>
-                                <span className="font-mono text-[9px] text-slate-505">IP: {log.ip}</span>
-                              </div>
-                            </div>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                <AuditTrailDashboard />
               )}
 
               {/* ============ TABS: SYSTEM HEALTH (NEW) ============ */}

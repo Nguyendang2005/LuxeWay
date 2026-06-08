@@ -25,6 +25,7 @@ public class MotorbikeService {
     private final MotorbikeBrandRepository motorbikeBrandRepository;
     private final MotorbikeModelRepository motorbikeModelRepository;
     private final UserRepository userRepository;
+    private final TranslationService translationService;
 
     public Page<MotorbikeDTOs.MotorbikeResponse> searchMotorbikes(
             String city, Integer engineCc, String transmission,
@@ -119,9 +120,10 @@ public class MotorbikeService {
     }
 
     public MotorbikeDTOs.MotorbikeResponse toResponse(Motorbike motorbike) {
+        String lang = translationService.getCurrentLanguageCode();
         MotorbikeDTOs.MotorbikeResponse response = new MotorbikeDTOs.MotorbikeResponse();
         response.setId(motorbike.getId());
-        response.setName(motorbike.getName());
+        response.setName(translationService.translateMotorbike(motorbike.getId(), lang, motorbike.getName(), null, "name"));
         response.setBrandName(motorbike.getModel().getBrand().getName());
         response.setModelName(motorbike.getModel().getName());
         response.setCategory(motorbike.getModel().getCategory());

@@ -2,7 +2,7 @@
 import { useUIStore } from '@/store';
 
 
-export type Language = 'en' | 'vi' | 'ja' | 'ko' | 'zh' | 'fr' | 'de';
+export type Language = 'en' | 'vi' | 'ja' | 'ko' | 'zh' | 'fr' | 'de' | 'es';
 
 export const translations = {
   en: {
@@ -2364,6 +2364,45 @@ export const deTranslations = {
   }
 };
 
+export const esTranslations = {
+  nav: {
+    marketplace: 'Buscar Vehículos',
+    messages: 'Mensajes',
+    signIn: 'Iniciar Sesión',
+    signUp: 'Comenzar',
+    dashboard: 'Panel de Control',
+    ownerDashboard: 'Panel de Propietario',
+    ownerDashboardFull: 'Panel de Control de Propietario',
+    admin: 'Administrador',
+    adminPanel: 'Panel de Administrador',
+    profile: 'Perfil',
+    settings: 'Ajustes',
+    logout: 'Cerrar Sesión',
+    addVehicle: 'Publicar Vehículo',
+    help: 'Ayuda',
+    reviews: 'Reseñas',
+    wishlist: 'Lista de Deseos',
+    notifications: 'Notificaciones',
+    wallet: 'LuxeWallet',
+    verified: 'Verificado',
+    themeLight: 'Modo Claro',
+    themeDark: 'Modo Oscuro',
+    changeLanguage: 'Cambiar Idioma',
+    search: 'Buscar'
+  },
+  common: {
+    loading: 'Cargando...',
+    save: 'Guardar Cambios',
+    cancel: 'Cancelar',
+    delete: 'Eliminar',
+    edit: 'Editar',
+    view: 'Ver',
+    success: '¡Éxito!',
+    error: 'Algo salió mal',
+    confirm: 'Confirmar'
+  }
+};
+
 export type TranslationKeys = typeof translations.en & {
   landingPage: typeof landingPageExtraTranslations.en;
 };
@@ -2385,6 +2424,8 @@ export function useT() {
     activeDict = frTranslations as any;
   } else if (language === 'de') {
     activeDict = deTranslations as any;
+  } else if (language === 'es') {
+    activeDict = esTranslations as any;
   }
 
   const extra = landingPageExtraTranslations[language] || landingPageExtraTranslations.en;
