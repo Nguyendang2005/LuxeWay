@@ -725,3 +725,54 @@ Trong giai đoạn này (Phase 5.1), mình đã cùng Antigravity hoàn thiện 
 | Ghi lại đầy đủ | 5 | Cập nhật đủ cả 4 file members |
 | Sử dụng AI có trách nhiệm | 5 | Tự làm chủ coding, dùng AI làm bệ phóng tăng tốc |
 
+---
+
+## Reflection — Phase 5.2: Dashboard UI/UX Overhaul & Custom Design System Components (2026-06-12)
+
+### Tóm tắt
+
+Trong giai đoạn này (Phase 5.2), nhóm đã thực hiện thiết kế lại toàn bộ giao diện Dashboard cho Customer, Owner và Admin để đạt tiêu chuẩn UI/UX Premium. Đồng thời, xây dựng các component cốt lõi trong Design System bao gồm Avatar, StatusBadge, và Breadcrumbs, tích hợp hiệu ứng vi mô (micro-interactions) nâng cao, cải tiến Skeleton Loading shimmer và fix lỗi TypeScript.
+
+### Những điều học được
+
+```text
+1. Phát triển thành phần có tính tái sử dụng cao (Reusable Components):
+   Việc thiết kế Avatar và StatusBadge như các component độc lập giúp code ở các Dashboard sạch hơn rất nhiều. Avatar tự sinh fallback chữ cái đầu tiên và gradient màu ngẫu nhiên dựa trên mã băm (hash) của tên người dùng, mang lại giao diện cá nhân hóa cao mà không cần hình ảnh.
+
+2. Trải nghiệm người dùng thông qua hiệu ứng vi mô (Micro-interactions):
+   Những tương tác nhỏ như hover sidebar làm dịch chuyển icon 2px, nút bấm co lại nhẹ (scale 0.97) khi click, hay card dịch chuyển lên trên (translateY -2px) kèm đổ bóng mịn màng giúp ứng dụng có cảm giác sống động và phản hồi tức thì với hành vi của người dùng.
+
+3. Xử lý trạng thái tải (Loading States) bằng Skeleton Shimmer:
+   Thay vì sử dụng spinner xoay tròn truyền thống gây nhàm chán hoặc màn hình trắng xóa khi chờ API, Skeleton shimmer mô phỏng cấu trúc của component thực tế với hiệu ứng ánh sáng chạy ngang giúp người dùng có cảm giác ứng dụng tải nhanh hơn.
+
+4. Khắc phục lỗi compiler TypeScript trong React:
+   Việc sử dụng các thư viện biểu đồ như Recharts đòi hỏi khai báo kiểu dữ liệu chặt chẽ cho custom tooltips. Việc gán an toàn kiểu dữ liệu và kiểm tra các mảng dữ liệu trước khi map giúp loại bỏ hoàn toàn các warning và error biên dịch.
+```
+
+### Tự đánh giá Phase 5.2
+
+| Tiêu chí | Điểm | Ghi chú |
+|---|:---:|---|
+| Hiểu vấn đề trước khi fix | 5 | Xác định rõ các yêu cầu về micro-interactions, skeleton và themes |
+| Fix đúng nguyên nhân gốc | 5 | Đưa các định nghĩa styling vào globals.css và viết các UI components chuẩn |
+| Kiểm chứng sau fix | 5 | Build thành công 100% không có lỗi biên dịch TypeScript |
+| Ghi lại đầy đủ | 5 | Cập nhật đầy đủ cả 4 files trong thư mục members |
+| Sử dụng AI có trách nhiệm | 5 | Tận dụng AI để sinh khung component và tập trung tối ưu hóa chi tiết giao diện |
+
+---
+
+## 17. Cam kết Reflection
+
+Em/nhóm cam kết rằng nội dung reflection này phản ánh trung thực quá trình sử dụng AI và quá trình học tập trong bài tập/project.
+
+Sinh viên/nhóm hiểu rằng:
+
+- AI là công cụ hỗ trợ học tập, không thay thế hoàn toàn năng lực cá nhân.
+- Mọi kết quả AI gợi ý cần được kiểm tra trước khi sử dụng.
+- Sinh viên/nhóm chịu trách nhiệm với sản phẩm cuối cùng.
+- Sinh viên/nhóm cần giải thích được các phần đã nộp.
+
+| Đại diện sinh viên/nhóm | Ngày xác nhận |
+|---|---|
+| Nguyễn Văn Dạng - DE190324 | 2026-06-12 |
+

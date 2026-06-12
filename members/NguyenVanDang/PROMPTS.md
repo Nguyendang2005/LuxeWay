@@ -66,6 +66,9 @@ Sinh viên/nhóm cần ghi lại:
 | 12 | 2026-05-28 | Antigravity | Tích hợp ImageUploader & REST API vào form xe | Hỏi cách tích hợp kéo-thả ImageUploader vào VehicleFormPage và gọi API lưu xe | VehicleFormPage gọi REST API create/update xe, tích hợp ImageUploader | Có | src/pages/dashboard/OwnerDashboard.tsx |
 | 13 | 2026-05-28 | Antigravity | Khắc phục lỗi biên dịch TypeScript & whitelisting | Hỏi cách sửa lỗi Settings sidebar link, Loader2 import, null check vehicle và config SecurityConfig | Gợi ý code sửa Settings, import Loader2, vehicle null check và whitelist return redirect | Có | src/pages/dashboard/CustomerDashboard.tsx |
 | 14 | 2026-06-03 | Antigravity | Hệ thống Help Center & Sửa lỗi stats Landing Page | Hỏi về thiết kế entities và controller/service cho help categories/articles/tickets, debug JPA query, và sửa lỗi làm tròn stats card | Các entity và controller, API client, JPA fix, và stats card fix | Có | src/Back_end/, src/Front_end/ |
+| 15 | 2026-06-06 | Antigravity | Tách thực thể Vehicle thành Car và Motorbike chuyên biệt | Hỏi về cách phân chia Vehicle thành Car và Motorbike | Tạo các thực thể Car/Motorbike riêng, các API service/controller tương ứng ở backend và các page marketplace riêng ở frontend | Có | src/Back_end/, src/Front_end/ |
+| 16 | 2026-06-07 | Antigravity | Redesign Landing Page Premium, promotions table, và translate notifications | Hỏi redesign Landing Page premium, promotions DB table và dịch notifications song ngữ | LiveActivitySection, RevenueCalculator, promotions migration và translateNotification | Có | LandingPage.tsx, translations.ts |
+| 17 | 2026-06-12 | Antigravity | Tối ưu hóa UI/UX Dashboard, Design System components | Hỏi đại tu giao diện Dashboard, tạo Avatar, StatusBadge, Breadcrumbs, và shimmer skeletons | globals.css, dashboards (Customer, Owner, Admin), Avatar, StatusBadge, Breadcrumbs, Skeleton | Có | dashboards, globals.css, components/ui/ |
 
 ---
 
@@ -1322,6 +1325,76 @@ Tối ưu hóa giao diện LiveActivitySection và công thức tính toán lợ
 
 ---
 
+### Prompt số 17
+
+| Nội dung | Thông tin |
+|---|---|
+| Ngày sử dụng | 2026-06-12 |
+| Công cụ AI | Antigravity |
+| Mục đích | Đại tu giao diện Dashboard, xây dựng các component Design System (Avatar, StatusBadge, Breadcrumbs) và shimmer loaders |
+| Phần việc liên quan | Frontend / UI/UX Design |
+| Mức độ sử dụng | Hỏi sinh code |
+
+#### 5.1. Prompt nguyên văn
+
+```text
+Overhaul the Customer, Owner, and Admin dashboards of LuxeWay:
+1. Build reusable Design System components:
+   - Avatar: displays user initials with a random background gradient fallback when avatar url is missing.
+   - StatusBadge: maps booking/vehicle status string to appropriate colors and icons.
+   - Breadcrumbs: responsive breadcrumbs component using page paths.
+2. Implement micro-interactions (sidebar hover transition 100ms, icon shift 2px right, active nav border-left 3px solid, button click scale(0.97), card hover translateY(-2px)).
+3. Upgrade Skeleton loading: add CSS shimmer animation, limit StatCardSkeleton to exactly 2 lines.
+4. Replace emojis with clean SVG icons for Empty States.
+5. Standardize layout and colors: Owner Dashboard is Dark Theme (#0D0F14), Admin Dashboard is Light Theme (#F4F6FA), and Customer Dashboard is Dark Navy Theme (#0F1117). Fix charts with clean interactive tooltips.
+```
+
+#### 5.2. Bối cảnh khi viết prompt
+
+```text
+Cần nâng cao chất lượng trải nghiệm các Dashboard để đạt giao diện premium, chuyên nghiệp, loại bỏ các emoji cũ và cấu hình loading skeletons tốt hơn, đồng thời giải quyết các lỗi biên dịch TypeScript.
+```
+
+#### 5.3. Kết quả AI trả về
+
+```text
+AI cung cấp mã nguồn các component Avatar, StatusBadge, Breadcrumbs và cập nhật cho Skeleton.tsx, globals.css, CustomerDashboard.tsx, OwnerDashboard.tsx, và AdminDashboard.tsx.
+```
+
+#### 5.4. Kết quả đã áp dụng vào bài
+
+```text
+Tích hợp thành công toàn bộ các component và styling mới. Frontend biên dịch thành công 100% không cảnh báo hay lỗi.
+```
+
+#### 5.5. Phần sinh viên/nhóm đã chỉnh sửa hoặc cải tiến
+
+```text
+- Tối ưu hóa các biểu đồ Recharts cho responsive, điều chỉnh kích thước nhãn và white tooltip background.
+- Ép kiểu và bổ sung render helpers cho StatusBadge và Avatar trong các table rows để tránh lỗi build compiler.
+```
+
+#### 5.6. Đánh giá chất lượng prompt
+
+- [x] Prompt rõ ràng
+- [x] Prompt có đủ bối cảnh
+- [ ] Prompt còn thiếu thông tin
+- [x] Prompt tạo ra kết quả tốt
+- [ ] Prompt tạo ra kết quả chưa phù hợp
+- [ ] Cần hỏi lại AI nhiều lần
+- [x] Cần tự kiểm tra và chỉnh sửa nhiều
+- [ ] Kết quả AI có lỗi hoặc chưa chính xác
+
+#### 5.7. Minh chứng liên quan
+
+| Loại minh chứng | Nội dung |
+|---|---|
+| File liên quan | CustomerDashboard.tsx, OwnerDashboard.tsx, AdminDashboard.tsx, globals.css, Avatar.tsx, StatusBadge.tsx, Breadcrumbs.tsx, Skeleton.tsx |
+| Kết quả chạy/test | Build Vite thành công, dashboard hiển thị mượt mà với premium components |
+| Link commit | [DE190324] feat: overhaul dashboard UI/UX with premium design system components and micro-interactions |
+
+---
+
 ## 11. Cam kết sử dụng prompt minh bạch
 
 Sinh viên/nhóm cam kết rằng:
@@ -1334,5 +1407,5 @@ Sinh viên/nhóm cam kết rằng:
 
 | Đại diện sinh viên/nhóm | Ngày xác nhận |
 |---|---|
-| Nguyễn Văn Dạng - DE190324 | 2026-06-07 |
+| Nguyễn Văn Dạng - DE190324 | 2026-06-12 |
 

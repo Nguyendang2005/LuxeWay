@@ -38,11 +38,11 @@ Nguyên tắc ghi changelog:
 | Phiên bản/Giai đoạn | Thời gian | Nội dung chính | Trạng thái |
 |---|---|---|---|
 | Phase 01 | 2026-05-12 | Khởi tạo project, cấu trúc repo | Completed |
-| Phase 02 | 2026-05-13 | Phân tích yêu cầu, xác định user roles | In Progress |
-| Phase 03 | 2026-05-14 | Thiết kế hệ thống, thiết kế UI/UX Frontend | In Progress |
+| Phase 02 | 2026-05-13 | Phân tích yêu cầu, xác định user roles | Completed |
+| Phase 03 | 2026-05-14 | Thiết kế hệ thống, thiết kế UI/UX Frontend | Completed |
 | Phase 04 | 2026-05-14 đến 2026-05-25 | Implementation (Frontend & Backend Advanced) | Completed |
-| Phase 05 | (Chưa bắt đầu) | Testing & Debug | Not Started |
-| Phase 06 | (Chưa bắt đầu) | Hoàn thiện báo cáo và demo | Not Started |
+| Phase 05 | 2026-06-06 đến 2026-06-12 | Refactoring, Premium UI/UX & Design System components | Completed |
+| Phase 06 | (Chưa bắt đầu) | Hoàn thiện báo cáo và demo | In Progress |
 
 ---
 
@@ -906,6 +906,67 @@ Branch: feature/de190324-vehicle-rental-platform
 Commit: [DE190324] feat: redesign premium Landing Page with live activity, revenue calculator and promotions seed
 ```
 
+# [Phase 05.2] Dashboard UI/UX Overhaul, Custom Design System Components & Shimmer Loaders
+
+## Ngày thực hiện
+
+```text
+2026-06-12
+```
+
+## Đã hoàn thành
+
+- [x] Nâng cấp và cải tiến toàn diện giao diện Dashboard cho cả 3 phân quyền: Customer Dashboard, Owner Dashboard, và Admin Dashboard theo tiêu chuẩn thiết kế Premium.
+- [x] Tạo và tích hợp các component cốt lõi thuộc Design System:
+  - `<Avatar>`: hỗ trợ hiển thị ảnh đại diện, có fallback chữ cái đầu tiên và background gradient màu sắc ngẫu nhiên.
+  - `<StatusBadge>`: hiển thị trạng thái động (active, pending, completed, cancelled, v.v.) với màu sắc và icon thích hợp.
+  - `<Breadcrumbs>`: điều hướng phân cấp (Breadcrumbs navigation) trên tất cả các trang dashboard.
+- [x] Tích hợp hiệu ứng vi mô (Micro-interactions) nâng cao:
+  - Hiệu ứng hover sidebar nav items với animation dịch chuyển icon (icon shift 2px) và transition 100ms.
+  - Border active nav indicator (border-left 3px solid accent) kèm background nhạt.
+  - Hiệu ứng click button (scale 0.97 trong 80ms).
+  - Hiệu ứng hover cards (translateY -2px và đổ bóng mịn màng).
+- [x] Triển khai hệ thống Skeleton Loading chuyên sâu:
+  - Sử dụng Shimmer animation (background linear-gradient quét qua lại).
+  - Stat cards skeleton hiển thị chính xác 2 dòng shimmer gọn gàng.
+- [x] Thiết kế Empty States chuẩn UX với icon SVG sắc nét (thay thế emoji), tiêu đề font weight 600, mô tả muted color và nút kêu gọi hành động (CTA button).
+- [x] Tích hợp các biểu đồ tương tác Recharts với tooltip trắng đè nổi tinh tế trên nền tối/sáng của dashboard.
+- [x] Khắc phục toàn bộ lỗi TypeScript biên dịch, đảm bảo dự án build thành công (`npm run build`) không có lỗi.
+
+## Thay đổi chi tiết - Nguyễn Văn Dạng (DE190324)
+
+| STT | Nội dung thay đổi | Người thực hiện | File/Module liên quan | Minh chứng |
+|---:|---|---|---|---|
+| 1 | Xây dựng các component UI/UX dùng chung (Avatar, StatusBadge, Breadcrumbs) | Nguyễn Văn Dạng | Avatar.tsx, StatusBadge.tsx, Breadcrumbs.tsx | Thư mục `components/ui/` |
+| 2 | Refactor & Redesign Customer Dashboard UI | Nguyễn Văn Dạng | CustomerDashboard.tsx | CustomerDashboard.tsx |
+| 3 | Refactor & Redesign Owner Dashboard UI | Nguyễn Văn Dạng | OwnerDashboard.tsx | OwnerDashboard.tsx |
+| 4 | Refactor & Redesign Admin Dashboard UI | Nguyễn Văn Dạng | AdminDashboard.tsx | AdminDashboard.tsx |
+| 5 | Nâng cấp CSS globals cho theme dark/light, micro-interactions, và shimmer | Nguyễn Văn Dạng | globals.css | globals.css |
+| 6 | Cập nhật Skeleton component & shimmer animation | Nguyễn Văn Dạng | Skeleton.tsx | Skeleton.tsx |
+| 7 | Xác thực biên dịch TypeScript frontend | Nguyễn Văn Dạng | Front-end | `tsc -b && vite build` thành công |
+
+## AI có hỗ trợ không?
+
+- [x] Có
+- [ ] Không
+
+Nếu có, mô tả AI đã hỗ trợ phần nào:
+
+```text
+AI (Antigravity) hỗ trợ:
+- Gợi ý mã nguồn các component Avatar, StatusBadge, Breadcrumbs dùng chung.
+- Tối ưu CSS variables cho dark theme trên Owner/Customer Dashboard và light theme trên Admin Dashboard.
+- Viết CSS transition/transform cho micro-interactions và shimmer keyframes.
+- Debug và sửa lỗi biên dịch TypeScript liên quan đến type definitions của chart tooltips và inline components helper.
+```
+
+## Commit/Screenshot minh chứng
+
+```text
+Branch: feature/de190324-vehicle-rental-platform
+Commit: [DE190324] feat: overhaul dashboard UI/UX with premium design system components and micro-interactions
+```
+
 ---
 
 # 5. Cam kết cập nhật Changelog
@@ -914,5 +975,5 @@ Sinh viên/nhóm cam kết rằng nội dung changelog phản ánh đúng các t
 
 | Đại diện sinh viên/nhóm | Ngày xác nhận |
 |---|---|
-| Nguyễn Văn Dạng - DE190324 | 2026-06-07 |
+| Nguyễn Văn Dạng - DE190324 | 2026-06-12 |
 

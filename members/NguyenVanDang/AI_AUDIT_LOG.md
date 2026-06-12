@@ -690,6 +690,20 @@ Audit LuxeWay Car Rental Platform:
 
 ---
 
+## Log #16
+
+- **Date:** 2026-06-12
+- **Author:** NguyenVanDang (DE190324)
+- **AI Tool:** Antigravity
+- **Purpose:** Tối ưu hóa UI/UX Dashboard, xây dựng các component Design System (Avatar, StatusBadge, Breadcrumbs) và shimmer loaders
+- **Prompt Reference:** PROMPTS.md#prompt-17
+- **AI Output Summary:** Cung cấp mã nguồn cho các component Avatar, StatusBadge, Breadcrumbs; cấu hình CSS variables cho globals.css; nâng cấp các dashboards (Customer, Owner, Admin) để sử dụng các component này; sửa lỗi chart tooltip và các TypeScript warnings.
+- **Human Decision:** Custom màu sắc cho Avatar fallback background gradient ngẫu nhiên, tối ưu layout grid của các Dashboard để có giao diện Premium, căn chỉnh tooltip Recharts hiển thị nổi bật trên nền tối.
+- **Applied To:** `src/Front_end/src/pages/dashboard/CustomerDashboard.tsx`, `src/Front_end/src/pages/dashboard/OwnerDashboard.tsx`, `src/Front_end/src/pages/admin/AdminDashboard.tsx`, `src/Front_end/src/styles/globals.css`, `src/Front_end/src/components/ui/` (Avatar, StatusBadge, Breadcrumbs, Skeleton).
+- **Verification:** Chạy thành công lệnh build `tsc -b && vite build` trên frontend, kiểm tra trực quan giao diện responsive và các hiệu ứng vi mô hoạt động trơn tru.
+
+---
+
 ## 10. Cam kết học thuật
 
 Sinh viên/nhóm cam kết rằng:
@@ -702,5 +716,5 @@ Sinh viên/nhóm cam kết rằng:
 
 | Đại diện sinh viên/nhóm | Ngày xác nhận |
 |---|---|
-| Nguyễn Văn Dạng - DE190324 | 2026-06-07 |
+| Nguyễn Văn Dạng - DE190324 | 2026-06-12 |
 
