@@ -1,120 +1,133 @@
+<br />
 <div align="center">
-  <h1>🚗 LuxeWay</h1>
-  <p><strong>Trusted E-commerce Platform for Vehicle Rental</strong></p>
+  <a href="#">
+    <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/react/react-original.svg" alt="Logo" width="80" height="80">
+  </a>
 
-  <p>
-    <img src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB" alt="React" />
-    <img src="https://img.shields.io/badge/Spring_Boot-F2F4F9?style=for-the-badge&logo=spring-boot" alt="Spring Boot" />
-    <img src="https://img.shields.io/badge/SQL_Server-CC292B?style=for-the-badge&logo=microsoft-sql-server&logoColor=white" alt="SQL Server" />
+  <h1 align="center">LuxeWay - Premium Vehicle Rental Platform</h1>
+
+  <p align="center">
+    <strong>A modern, high-performance e-commerce platform for seamless vehicle rentals.</strong>
+    <br />
+    <br />
+    <a href="#-about-the-project">Explore the docs</a>
+    ·
+    <a href="#-features">View Features</a>
+    ·
+    <a href="#-getting-started">Getting Started</a>
   </p>
 </div>
 
----
+<!-- Badges -->
+<div align="center">
+  <img src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB" alt="React" />
+  <img src="https://img.shields.io/badge/Spring_Boot-F2F4F9?style=for-the-badge&logo=spring-boot" alt="Spring Boot" />
+  <img src="https://img.shields.io/badge/SQL_Server-CC292B?style=for-the-badge&logo=microsoft-sql-server&logoColor=white" alt="SQL Server" />
+  <img src="https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript" />
+  <img src="https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white" alt="Tailwind CSS" />
+</div>
 
-## 👨‍💻 Author
+<hr />
 
-| Name | GitHub Username | Role |
-| :--- | :--- | :--- |
-| **Nguyễn Văn Dạng** | [@Nguyendang2005](https://github.com/Nguyendang2005) | **Sole Developer & Creator** |
+## 📖 About The Project
 
-> **Note:** This project was developed entirely by Nguyễn Văn Dạng as a comprehensive e-commerce platform.
+**LuxeWay** is a production-ready, highly secure, and scalable e-commerce platform designed to bridge the gap between vehicle owners and customers. Built with modern web technologies, it ensures a seamless booking experience while providing powerful fleet management tools.
 
----
-
-## 🚀 About LuxeWay
-
-LuxeWay is a modern, secure, and highly efficient e-commerce platform dedicated to vehicle rental. It provides a seamless experience for customers looking to rent vehicles, owners managing their fleets, and administrators overseeing the platform.
-
-### ✨ Key Features
-- Comprehensive vehicle listing and search
-- Secure booking and payment workflows
-- Role-based access control (Admin, Owner, Customer)
-- Real-time status updates
+### 🎯 Core Objectives
+- Deliver a frictionless, premium UI/UX.
+- Ensure high availability and fast response times.
+- Implement bank-grade security for user data and transactions.
 
 ---
 
-## 🛠 Tech Stack
+## ✨ Features
 
-- **Frontend:** React.js, TypeScript, Vite, Tailwind CSS
-- **Backend:** Java 17, Spring Boot, Maven
-- **Database:** Microsoft SQL Server
-- **Security:** JWT Authentication, BCrypt Password Hashing
-
----
-
-## 🔐 Security Configuration
-
-**⚠️ Environment Variables Required**
-
-This project uses strict environment variables for security. Before starting:
-
-1. **Copy the environment template:**
-   ```bash
-   cp .env.example .env
-   ```
-2. **Generate a JWT secret** (e.g., using `openssl rand -base64 32`).
-3. **Configure your `.env`** with your specific database and JWT credentials.
-
-*For detailed security workflows, see:*
-- `QUICK-SECURITY-FIX-REFERENCE.md`
-- `SECURITY-SETUP-GUIDE.md`
-- `BUG-FIXES-SUMMARY.md`
+- **🚗 Advanced Vehicle Search:** Filter by type, brand, price, and availability in real-time.
+- **🔐 Secure Authentication:** JWT-based authentication with encrypted password storage.
+- **💳 Seamless Booking Workflow:** Interactive booking process with state management.
+- **👑 Role-based Access Control:**
+  - `Admin`: Full platform analytics and management.
+  - `Owner`: Fleet oversight, booking approvals, and revenue tracking.
+  - `Customer`: Easy rentals, profile management, and review system.
+- **📈 Real-time Analytics:** Dashboard with key metrics for business owners.
 
 ---
 
-## ⚙️ Getting Started
+## 🏗 System Architecture
+
+The application follows a modern client-server architecture with separation of concerns:
+
+- **Frontend Application:** React.js Single Page Application (SPA) utilizing Vite for lightning-fast HMR and optimized builds. State managed efficiently with modern hooks.
+- **Backend Service:** Spring Boot RESTful API ensuring robust business logic, transaction management, and security constraints.
+- **Persistence Layer:** Relational database management using Microsoft SQL Server for data integrity and complex querying.
+
+---
+
+## 🚀 Getting Started
+
+To get a local copy up and running, follow these simple steps.
 
 ### Prerequisites
-- Node.js 18+ & npm
-- Java 17+
+
+- Node.js (v18.x or newer)
+- Java Development Kit (JDK 17)
 - Microsoft SQL Server
+- Maven
 
-### 1️⃣ Frontend Setup
+### Installation & Setup
 
-```bash
-cd src/Front_end
-npm install
-npm run dev
-```
-**Frontend URL**: [http://localhost:5173/](http://localhost:5173/)
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/Nguyendang2005/LuxeWay.git
+   cd LuxeWay
+   ```
 
-### 2️⃣ Backend Setup
+2. **Configure Environment Variables**
+   - Copy the `.env.example` file and rename it to `.env`.
+   - Update the variables (Database credentials, JWT secret keys, etc.) to match your local configuration.
+   > **Warning:** Do not expose your `.env` file or commit it to version control.
 
-**Using IDE (Recommended):**
-1. Open IntelliJ IDEA or Eclipse.
-2. Import Maven project from `src/Back_end`.
-3. Run `LuxewayBackendApplication.java`.
+3. **Database Initialization**
+   - Execute the SQL scripts provided in `src/Back_end/import-data.sql` to initialize schemas.
 
-**Using Maven:**
-```bash
-cd src/Back_end
-mvn spring-boot:run
-```
-**Backend API**: [http://localhost:8080/api/v1](http://localhost:8080/api/v1)
+4. **Start the Backend Server**
+   ```bash
+   cd src/Back_end
+   mvn spring-boot:run
+   ```
 
-### 3️⃣ Database Initialization
-Execute the `src/Back_end/import-data.sql` script in SQL Server Management Studio to populate the initial schema and sample data.
-
-### 🧪 Test Accounts
-
-| Role | Email | Password |
-| :--- | :--- | :--- |
-| **Admin** | admin@luxeway.vn | `password` |
-| **Customer** | nguyen.van.a@gmail.com | `password` |
-| **Owner** | pham.minh.d@gmail.com | `password` |
+5. **Start the Frontend Client**
+   ```bash
+   cd src/Front_end
+   npm install
+   npm run dev
+   ```
 
 ---
 
-## 📖 Documentation & Important Links
+## 🛡️ Security Guidelines
 
-- 📚 **Full Setup Guide:** [START-PROJECT.md](START-PROJECT.md)
-- 🌐 **Frontend App:** http://localhost:5173/
-- 🧪 **Backend Test Page:** http://localhost:5173/test-backend
-- 🩺 **API Health Check:** http://localhost:8080/api/v1/test/health
-- 📑 **Swagger API Docs:** http://localhost:8080/api/v1/swagger-ui.html
+Security is treated as a first-class citizen in LuxeWay. We enforce:
+- No hardcoded secrets.
+- Environment-based configuration.
+- Robust input validation and sanitization.
+
+For detailed security deployment steps, refer to our comprehensive deployment guides included in the repository.
 
 ---
 
-<div align="center">
-  <i>Developed with ❤️ by Nguyễn Văn Dạng</i>
-</div>
+## 👨‍💻 Creator
+
+<a href="https://github.com/Nguyendang2005">
+  <img src="https://github.com/Nguyendang2005.png" width="60" style="border-radius:50%" alt="Nguyendang2005"/>
+</a>
+
+**Nguyễn Văn Dạng** - *Lead Engineer & Creator*
+
+[![GitHub](https://img.shields.io/badge/GitHub-Profile-181717?style=flat&logo=github)](https://github.com/Nguyendang2005)
+
+---
+
+<p align="center">
+  <i>Crafted with passion for building scalable systems.</i>
+</p>
