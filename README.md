@@ -1,201 +1,120 @@
-# SE AI Audit Project Template
+<div align="center">
+  <h1>🚗 LuxeWay</h1>
+  <p><strong>Trusted E-commerce Platform for Vehicle Rental</strong></p>
 
-## 1. Project Information
-
-| Item | Description |
-|---|---|
-| Course |  SWP391|
-| Class | SE20A02  |
-| Semester | SU26 |
-| Group | 2 |
-| Topic | LuxeWay - Trusted E-commerce Platform for Vehicle Rental |
-| Repository |swp391-su26-ai-audit-project-swp391_se20a02_group-02|
+  <p>
+    <img src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB" alt="React" />
+    <img src="https://img.shields.io/badge/Spring_Boot-F2F4F9?style=for-the-badge&logo=spring-boot" alt="Spring Boot" />
+    <img src="https://img.shields.io/badge/SQL_Server-CC292B?style=for-the-badge&logo=microsoft-sql-server&logoColor=white" alt="SQL Server" />
+  </p>
+</div>
 
 ---
 
-## 2. Team Members
+## 👨‍💻 Author
 
-| No | Student ID | Full Name | GitHub Username | Role | Main Responsibility |
-|---:|---|---|---|---|---|
-| 1 |  DE190968|  Lê Văn Hậu|  LEHAu1| Leader |  |
-| 2 |DE190324  |Nguyễn Văn Dạng | Nguyendang2005 | Member |  |
-| 3 | DE190928 | Hồ Thành Trung |  trungho20050-lang | Member |  |
-| 4 |  DE190371| Trần Phú Thịnh |  hellolang123| Member |  |
-| 5 |DE190264  | Nguyễn Bùi Quang Vinh | quangvinh7115 | Member |  |
+| Name | GitHub Username | Role |
+| :--- | :--- | :--- |
+| **Nguyễn Văn Dạng** | [@Nguyendang2005](https://github.com/Nguyendang2005) | **Sole Developer & Creator** |
 
----
-  
-## 3. Project Structure
-
-```text
-src/
-docs/
-.github/
-README.md
-```
+> **Note:** This project was developed entirely by Nguyễn Văn Dạng as a comprehensive e-commerce platform.
 
 ---
 
-## 4. Required AI Audit Documents
+## 🚀 About LuxeWay
 
-Each group must maintain the following documents:
+LuxeWay is a modern, secure, and highly efficient e-commerce platform dedicated to vehicle rental. It provides a seamless experience for customers looking to rent vehicles, owners managing their fleets, and administrators overseeing the platform.
 
-```text
-docs/AI_AUDIT_LOG.md
-docs/PROMPTS.md
-docs/REFLECTION.md
-docs/CHANGELOG.md
-```
-
----
-
-## 5. Workflow
-
-Students must follow this workflow:
-
-```text
-Issue → Branch → Commit → Pull Request → Review → Merge
-```
-
-Direct push to the `main` branch should be avoided.
+### ✨ Key Features
+- Comprehensive vehicle listing and search
+- Secure booking and payment workflows
+- Role-based access control (Admin, Owner, Customer)
+- Real-time status updates
 
 ---
 
-## 6. Branch Naming Convention
+## 🛠 Tech Stack
 
-```text
-feature/studentid-task-name
-bugfix/studentid-error-name
-docs/studentid-update-audit-log
-test/studentid-test-case-name
-```
-
-Example:
-
-```text
-feature/se123456-login-page
-bugfix/se123456-login-validation
-docs/se123456-update-ai-audit-log
-```
+- **Frontend:** React.js, TypeScript, Vite, Tailwind CSS
+- **Backend:** Java 17, Spring Boot, Maven
+- **Database:** Microsoft SQL Server
+- **Security:** JWT Authentication, BCrypt Password Hashing
 
 ---
 
-## 7. Commit Message Convention
+## 🔐 Security Configuration
 
-```text
-[StudentID] type: short description
-```
+**⚠️ Environment Variables Required**
 
-Examples:
+This project uses strict environment variables for security. Before starting:
 
-```text
-[SE123456] feat: add login page
-[SE123456] fix: fix login validation
-[SE123456] docs: update AI audit log
-[SE123456] test: add login test cases
-```
-
-Common types:
-
-```text
-feat, fix, docs, test, refactor, style, chore
-```
-
----
-
-## 🔐 SECURITY UPDATE (June 4, 2026)
-
-**⚠️ CRITICAL: Environment Variables Required**
-
-This project now uses environment variables for security. Before starting:
-
-1. **Copy environment template:**
+1. **Copy the environment template:**
    ```bash
-   copy .env.example .env
+   cp .env.example .env
    ```
+2. **Generate a JWT secret** (e.g., using `openssl rand -base64 32`).
+3. **Configure your `.env`** with your specific database and JWT credentials.
 
-2. **Generate JWT secret:**
-   ```bash
-   openssl rand -base64 32
-   ```
-   
-3. **Edit `.env` with your credentials**
-
-4. **Read security guides:**
-   - Quick Start: `QUICK-SECURITY-FIX-REFERENCE.md`
-   - Full Guide: `SECURITY-SETUP-GUIDE.md`
-   - Bug Fixes: `BUG-FIXES-SUMMARY.md`
-
-**Never commit `.env` file to Git!** (Already in `.gitignore`)
+*For detailed security workflows, see:*
+- `QUICK-SECURITY-FIX-REFERENCE.md`
+- `SECURITY-SETUP-GUIDE.md`
+- `BUG-FIXES-SUMMARY.md`
 
 ---
 
-## 8. How to Run
+## ⚙️ Getting Started
 
-### 🚀 Quick Start
+### Prerequisites
+- Node.js 18+ & npm
+- Java 17+
+- Microsoft SQL Server
 
-#### Prerequisites
-- ✅ Node.js 18+ & npm (for Frontend)
-- ✅ Java 17+ (for Backend)
-- ✅ SQL Server (Database)
-- ⚠️ Maven or IDE (IntelliJ IDEA/Eclipse)
+### 1️⃣ Frontend Setup
 
-#### Step 1: Start Frontend
 ```bash
 cd src/Front_end
 npm install
 npm run dev
 ```
-**Frontend URL**: http://localhost:5173/
+**Frontend URL**: [http://localhost:5173/](http://localhost:5173/)
 
-#### Step 2: Start Backend
-**Option A - Using IDE (Recommended)**
-1. Open IntelliJ IDEA or Eclipse
-2. Import Maven project from `src/Back_end`
-3. Run `LuxewayBackendApplication.java`
+### 2️⃣ Backend Setup
 
-**Option B - Using Maven**
+**Using IDE (Recommended):**
+1. Open IntelliJ IDEA or Eclipse.
+2. Import Maven project from `src/Back_end`.
+3. Run `LuxewayBackendApplication.java`.
+
+**Using Maven:**
 ```bash
 cd src/Back_end
 mvn spring-boot:run
 ```
-**Backend URL**: http://localhost:8080/api/v1
+**Backend API**: [http://localhost:8080/api/v1](http://localhost:8080/api/v1)
 
-#### Step 3: Import Sample Data
-Run `src/Back_end/import-data.sql` in SQL Server Management Studio
-
-#### Step 4: Test Connection
-Visit: http://localhost:5173/test-backend
-
-### 📖 Detailed Documentation
-See [START-PROJECT.md](START-PROJECT.md) for complete setup guide.
-
-### 🔗 Important URLs
-- **Frontend**: http://localhost:5173/
-- **Backend Test Page**: http://localhost:5173/test-backend
-- **Backend API**: http://localhost:8080/api/v1/test/health
-- **Swagger UI**: http://localhost:8080/api/v1/swagger-ui.html
+### 3️⃣ Database Initialization
+Execute the `src/Back_end/import-data.sql` script in SQL Server Management Studio to populate the initial schema and sample data.
 
 ### 🧪 Test Accounts
-```
-Admin:    admin@luxeway.vn / password
-Customer: nguyen.van.a@gmail.com / password
-Owner:    pham.minh.d@gmail.com / password
-```
+
+| Role | Email | Password |
+| :--- | :--- | :--- |
+| **Admin** | admin@luxeway.vn | `password` |
+| **Customer** | nguyen.van.a@gmail.com | `password` |
+| **Owner** | pham.minh.d@gmail.com | `password` |
 
 ---
 
-## 9. AI Usage Rule
+## 📖 Documentation & Important Links
 
-Students are allowed to use AI tools such as ChatGPT, Gemini, Claude, GitHub Copilot, Cursor, Antigravity, or similar tools.
+- 📚 **Full Setup Guide:** [START-PROJECT.md](START-PROJECT.md)
+- 🌐 **Frontend App:** http://localhost:5173/
+- 🧪 **Backend Test Page:** http://localhost:5173/test-backend
+- 🩺 **API Health Check:** http://localhost:8080/api/v1/test/health
+- 📑 **Swagger API Docs:** http://localhost:8080/api/v1/swagger-ui.html
 
-However, all important AI usage must be recorded in:
+---
 
-```text
-docs/AI_AUDIT_LOG.md
-docs/PROMPTS.md
-docs/CHANGELOG.md
-docs/REFLECTION.md
-```
-
-Students must be able to explain, verify, and defend all submitted work.
+<div align="center">
+  <i>Developed with ❤️ by Nguyễn Văn Dạng</i>
+</div>
