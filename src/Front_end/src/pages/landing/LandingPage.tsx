@@ -10,6 +10,7 @@ import {
   Lock, BadgeCheck, Headphones, Bike, Briefcase, Compass, Gauge
 } from 'lucide-react';
 import { homeService } from '@/services/homeService';
+import { vehicleService } from '@/services/vehicleService';
 import type {
   HomeStats, Promotion, TrendingVehicle, CategoryData,
   Destination, TestimonialsData, OwnerStats, FAQ
@@ -1639,8 +1640,48 @@ const VehicleTypeShowcase: React.FC = () => {
   const t = useT();
   const language = useUIStore((s: any) => s.language);
   const [activeTab, setActiveTab] = useState<'cars' | 'motorbikes'>('cars');
+  
+  const [cars, setCars] = useState(FEATURED_CARS);
+  const [motorbikes, setMotorbikes] = useState(FEATURED_MOTORBIKES);
 
-  const list = activeTab === 'cars' ? FEATURED_CARS : FEATURED_MOTORBIKES;
+  useEffect(() => {
+    const fetchVehicles = async () => {
+      try {
+        const carRes = await vehicleService.getAll({ vehicleType: 'CAR', status: 'AVAILABLE' } as any, 1, 6);
+        if (carRes.data && carRes.data.length > 0) {
+          setCars(carRes.data.map((v: any) => ({
+            id: v.id,
+            brand: v.brand,
+            model: v.model,
+            price: v.pricePerDay,
+            rating: v.rating,
+            city: v.location?.city || v.city || 'Vietnam',
+            img: v.thumbnailUrl || v.primaryImage || '/images/cars/caramy_2.5Q.avif',
+            badge: v.category || 'Standard'
+          })));
+        }
+
+        const motoRes = await vehicleService.getAll({ vehicleType: 'MOTORBIKE', status: 'AVAILABLE' } as any, 1, 6);
+        if (motoRes.data && motoRes.data.length > 0) {
+          setMotorbikes(motoRes.data.map((v: any) => ({
+            id: v.id,
+            brand: v.brand,
+            model: v.model,
+            price: v.pricePerDay,
+            rating: v.rating,
+            city: v.location?.city || v.city || 'Vietnam',
+            img: v.thumbnailUrl || v.primaryImage || '/images/motorbikes/Sh350_i.webp',
+            badge: v.category || 'Standard'
+          })));
+        }
+      } catch (err) {
+        console.error('Failed to fetch real vehicles:', err);
+      }
+    };
+    fetchVehicles();
+  }, []);
+
+  const list = activeTab === 'cars' ? cars : motorbikes;
 
   return (
     <section className="py-20 bg-white">
@@ -1695,7 +1736,7 @@ const VehicleTypeShowcase: React.FC = () => {
                 <div
                   key={idx}
                   className="w-[280px] sm:w-[320px] flex-shrink-0 bg-white rounded-md overflow-hidden shadow-sm hover:border-[#D4AF37]/35 hover:shadow-md transition-all duration-300 cursor-pointer border border-slate-100 group"
-                  onClick={() => navigate(`/marketplace?type=${activeTab === 'cars' ? 'car' : 'motorbike'}&q=${encodeURIComponent(v.model)}`)}
+                  onClick={() => navigate((v as any).id ? `/vehicle/${(v as any).id}` : `/marketplace?type=${activeTab === 'cars' ? 'car' : 'motorbike'}&q=${encodeURIComponent(v.model)}`)}
                 >
                   <div className="relative h-44 overflow-hidden bg-slate-50">
                     <img src={v.img} alt={v.model} loading="lazy" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
