@@ -476,7 +476,7 @@ export const CarsMarketplace: React.FC = () => {
                 <motion.div
                   variants={staggerContainer} initial="hidden" animate="visible"
                   className={cn(viewMode === 'grid'
-                    ? mapOpen ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2 gap-6' : 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6'
+                    ? mapOpen ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3 gap-6' : 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6'
                     : 'space-y-6'
                   )}
                 >

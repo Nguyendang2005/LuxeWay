@@ -95,7 +95,7 @@ services:
       - MAIL_PASSWORD=${MAIL_PASSWORD:-your-app-specific-password}
       - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID:-your-google-client-id}
       - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET:-your-google-client-secret}
-      - CORS_ALLOWED_ORIGINS=${CORS_ALLOWED_ORIGINS:-http://localhost:5173,http://160.191.164.132:5173,https://luxeway-4add3.web.app,https://luxeway-4add3.firebaseapp.com}
+      - CORS_ALLOWED_ORIGINS=${CORS_ALLOWED_ORIGINS:-http://localhost:5173,http://160.191.164.132:5173,https://luxeway-4add3.web.app,https://luxeway-4add3.firebaseapp.com,http://luxeway.io.vn,https://luxeway.io.vn,http://160.191.196.132}
       - VNPAY_TMN_CODE=${VNPAY_TMN_CODE:-LUXEWAY01}
       - VNPAY_SECRET_KEY=${VNPAY_SECRET_KEY:-LUXEWAY_VNPAY_SECRET_KEY_2024}
       - VNPAY_URL=${VNPAY_URL:-https://sandbox.vnpayment.vn/paymentv2/vpcpay.html}
@@ -112,7 +112,7 @@ services:
       - FIREBASE_CLIENT_EMAIL=${FIREBASE_CLIENT_EMAIL:-firebase-adminsdk-fbsvc@luxeway-4add3.iam.gserviceaccount.com}
       - FIREBASE_PRIVATE_KEY=${FIREBASE_PRIVATE_KEY}
       - SESSION_SECRET=${SESSION_SECRET:-change-this-session-secret}
-      - FRONTEND_URL=${FRONTEND_URL:-http://localhost:5173}
+      - FRONTEND_URL=${FRONTEND_URL:-http://luxeway.io.vn}
     depends_on:
       sqlserver:
         condition: service_healthy

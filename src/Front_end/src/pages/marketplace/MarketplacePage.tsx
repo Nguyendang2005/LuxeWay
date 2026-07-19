@@ -542,7 +542,7 @@ const MarketplacePage: React.FC = () => {
 
   const FALLBACK_IMAGE = 'https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&q=80&w=800';
 
-  const [showFloatingButton, setShowFloatingButton] = useState(true);
+  const [showFloatingButton, setShowFloatingButton] = useState(false);
   const lastScrollYRef = useRef(0);
 
   useEffect(() => {
@@ -555,14 +555,14 @@ const MarketplacePage: React.FC = () => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
       if (currentScrollY < 50) {
-        setShowFloatingButton(true);
+        setShowFloatingButton(false);
         lastScrollYRef.current = currentScrollY;
         return;
       }
       if (currentScrollY > lastScrollYRef.current) {
-        setShowFloatingButton(false);
-      } else {
         setShowFloatingButton(true);
+      } else {
+        setShowFloatingButton(false);
       }
       lastScrollYRef.current = currentScrollY;
     };
@@ -1200,7 +1200,15 @@ const MarketplacePage: React.FC = () => {
                     selectedVehicleId={selectedVehicleId}
                     hoveredVehicleId={hoveredMapVehicleId || hoveredVehicleId || undefined}
                     onSelectionChange={setMapSelectedVehicles}
-                    onMarkerHover={setHoveredMapVehicleId}
+                    onMarkerHover={id => {
+                      setHoveredMapVehicleId(id);
+                      if (id) {
+                        const card = document.getElementById(`map-carousel-card-${id}`);
+                        if (card) {
+                          card.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+                        }
+                      }
+                    }}
                     onMapMoved={() => {
                       setShowSearchArea(true);
                       setShouldFitBounds(false); // Disable auto-fit once user interacts
@@ -1317,7 +1325,7 @@ const MarketplacePage: React.FC = () => {
 
                   {/* Bottom Carousel (Airbnb/Mioto style) */}
                   <AnimatePresence>
-                    {(isMapView ? (showCarousel && vehicles.length > 0) : mapSelectedVehicles.length > 0) && (
+                    {(isMapView ? vehicles.length > 0 : mapSelectedVehicles.length > 0) && (
                       <motion.div
                         initial={{ y: 150, opacity: 0 }}
                         animate={{ y: 0, opacity: 1 }}

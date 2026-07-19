@@ -206,7 +206,6 @@ public class FptAiEkycService {
 
     private boolean isMockMode() {
         return apiKey == null || apiKey.isBlank() || apiKey.contains("placeholder") 
-            || "BKfUiImFD4DI3RI2OEjoCahBTQOgVtPf".equals(apiKey) 
             || "YOUR_FPTAI_API_KEY".equals(apiKey);
     }
 

@@ -29,10 +29,11 @@ if [ ! -f ".env" ]; then
 fi
 
 IP_ADDR="160.191.164.132"
+DOMAIN="https://luxeway.io.vn"
 
 # Update critical env vars (use sed to replace existing values)
-sed -i "s|^FRONTEND_URL=.*|FRONTEND_URL=http://$IP_ADDR:5173|g" .env
-sed -i "s|^CORS_ALLOWED_ORIGINS=.*|CORS_ALLOWED_ORIGINS=http://$IP_ADDR:5173,http://localhost:5173|g" .env
+sed -i "s|^FRONTEND_URL=.*|FRONTEND_URL=$DOMAIN|g" .env
+sed -i "s|^CORS_ALLOWED_ORIGINS=.*|CORS_ALLOWED_ORIGINS=$DOMAIN,http://$IP_ADDR:5173,http://localhost:5173|g" .env
 
 # Frontend uses relative URLs via nginx proxy - ensure these are set correctly
 sed -i '/^VITE_API_URL=/d' .env
@@ -52,7 +53,8 @@ grep -q "^VITE_FIREBASE_APP_ID=" .env || echo "VITE_FIREBASE_APP_ID=1:1675575999
 
 # Google OAuth
 grep -q "^VITE_GOOGLE_CLIENT_ID=" .env || echo "VITE_GOOGLE_CLIENT_ID=847311755277-hkm959nlmjee42aiccr313pah9mtokd2.apps.googleusercontent.com" >> .env
-grep -q "^VITE_GOOGLE_REDIRECT_URI=" .env || echo "VITE_GOOGLE_REDIRECT_URI=http://$IP_ADDR:5173/auth/google/success" >> .env
+grep -q "^VITE_GOOGLE_REDIRECT_URI=" .env || echo "VITE_GOOGLE_REDIRECT_URI=$DOMAIN/auth/google/success" >> .env
+sed -i "s|^VITE_GOOGLE_REDIRECT_URI=.*|VITE_GOOGLE_REDIRECT_URI=$DOMAIN/auth/google/success|g" .env
 
 echo "=== [5/5] Starting Docker Compose (This will take a few minutes) ==="
 docker compose down || true

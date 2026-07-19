@@ -168,60 +168,60 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ stats }) => {
           {/* Search card */}
           <motion.div
             variants={staggerItem}
-            className="w-full max-w-4xl mx-auto bg-white rounded-2xl shadow-2xl p-2"
+            className="w-full max-w-4xl mx-auto bg-[#0F172A]/40 backdrop-blur-xl border border-white/15 rounded-3xl p-3 sm:p-4 shadow-2xl"
           >
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-1">
+            <div className="grid grid-cols-2 lg:grid-cols-6 gap-2 sm:gap-3">
               {/* Location */}
-              <div className="lg:col-span-2 flex items-center gap-2 px-4 py-3 hover:bg-slate-50 rounded-xl transition-colors">
-                <MapPin className="w-4 h-4 text-amber-500 flex-shrink-0" />
+              <div className="col-span-2 flex items-center gap-3 px-4 py-3 sm:py-4 bg-white/5 hover:bg-white/10 rounded-2xl transition-colors border border-white/5">
+                <MapPin className="w-5 h-5 text-amber-400 flex-shrink-0" />
                 <div className="flex-1 min-w-0">
-                  <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-0.5">Location</p>
+                  <p className="text-[10px] sm:text-xs font-bold uppercase tracking-widest text-white/50 mb-1">Location</p>
                   <input
                     type="text"
                     value={location}
                     onChange={e => setLocation(e.target.value)}
                     placeholder="Ho Chi Minh, Ha Noi..."
-                    className="w-full text-sm font-medium text-slate-800 placeholder:text-slate-300 outline-none bg-transparent"
+                    className="w-full text-sm sm:text-base font-semibold text-white placeholder:text-white/30 outline-none bg-transparent"
                     onKeyDown={e => e.key === 'Enter' && handleSearch()}
                   />
                 </div>
               </div>
 
               {/* Pickup */}
-              <div className="flex items-center gap-2 px-4 py-3 border-l border-slate-100 hover:bg-slate-50 rounded-xl transition-colors">
-                <Calendar className="w-4 h-4 text-amber-500 flex-shrink-0" />
-                <div className="flex-1">
-                  <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-0.5">Pick-up</p>
+              <div className="col-span-1 flex items-center gap-3 px-4 py-3 sm:py-4 bg-white/5 hover:bg-white/10 rounded-2xl transition-colors border border-white/5">
+                <Calendar className="w-4 h-4 sm:w-5 sm:h-5 text-amber-400 flex-shrink-0" />
+                <div className="flex-1 min-w-0">
+                  <p className="text-[10px] sm:text-xs font-bold uppercase tracking-widest text-white/50 mb-1">Pick-up</p>
                   <input type="date" value={startDate} min={today}
                     onChange={e => setStartDate(e.target.value)}
-                    className="w-full text-sm font-medium text-slate-800 outline-none bg-transparent cursor-pointer" />
+                    className="w-full text-xs sm:text-sm font-semibold text-white outline-none bg-transparent cursor-pointer [&::-webkit-calendar-picker-indicator]:invert" />
                 </div>
               </div>
 
               {/* Return */}
-              <div className="flex items-center gap-2 px-4 py-3 border-l border-slate-100 hover:bg-slate-50 rounded-xl transition-colors">
-                <Calendar className="w-4 h-4 text-amber-500 flex-shrink-0" />
-                <div className="flex-1">
-                  <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-0.5">Return</p>
+              <div className="col-span-1 flex items-center gap-3 px-4 py-3 sm:py-4 bg-white/5 hover:bg-white/10 rounded-2xl transition-colors border border-white/5">
+                <Calendar className="w-4 h-4 sm:w-5 sm:h-5 text-amber-400 flex-shrink-0" />
+                <div className="flex-1 min-w-0">
+                  <p className="text-[10px] sm:text-xs font-bold uppercase tracking-widest text-white/50 mb-1">Return</p>
                   <input type="date" value={endDate} min={startDate || today}
                     onChange={e => setEndDate(e.target.value)}
-                    className="w-full text-sm font-medium text-slate-800 outline-none bg-transparent cursor-pointer" />
+                    className="w-full text-xs sm:text-sm font-semibold text-white outline-none bg-transparent cursor-pointer [&::-webkit-calendar-picker-indicator]:invert" />
                 </div>
               </div>
 
-              {/* Vehicle Type (optional, styled placeholder for 5th col) */}
-              <div className="flex items-center gap-2 px-4 py-3 border-l border-slate-100 hover:bg-slate-50 rounded-xl transition-colors">
-                <Car className="w-4 h-4 text-amber-500 flex-shrink-0" />
-                <div className="flex-1">
-                  <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-0.5">Vehicle Type</p>
+              {/* Vehicle Type */}
+              <div className="col-span-2 lg:col-span-1 flex items-center gap-3 px-4 py-3 sm:py-4 bg-white/5 hover:bg-white/10 rounded-2xl transition-colors border border-white/5">
+                <Car className="w-4 h-4 sm:w-5 sm:h-5 text-amber-400 flex-shrink-0" />
+                <div className="flex-1 min-w-0">
+                  <p className="text-[10px] sm:text-xs font-bold uppercase tracking-widest text-white/50 mb-1">Type</p>
                   <select value={vehicleType} onChange={e => setVehicleType(e.target.value)}
-                    className="w-full text-sm font-medium text-slate-800 outline-none bg-transparent cursor-pointer">
-                    <option value="">Any type</option>
-                    <option value="economy">Economy Car</option>
-                    <option value="suv">SUV / Family</option>
-                    <option value="business">Luxury / Business</option>
-                    <option value="electric">Electric</option>
-                    <option value="motorbike">Motorbike / Scooter</option>
+                    className="w-full text-sm font-semibold text-white outline-none bg-transparent cursor-pointer appearance-none">
+                    <option value="" className="text-slate-800">Any type</option>
+                    <option value="economy" className="text-slate-800">Economy</option>
+                    <option value="suv" className="text-slate-800">SUV</option>
+                    <option value="business" className="text-slate-800">Luxury</option>
+                    <option value="electric" className="text-slate-800">Electric</option>
+                    <option value="motorbike" className="text-slate-800">Motorbike</option>
                   </select>
                 </div>
               </div>
@@ -229,10 +229,9 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ stats }) => {
               {/* Search button */}
               <button
                 onClick={handleSearch}
-                className="flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-bold text-sm text-white transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
-                style={{ background: 'linear-gradient(135deg,#0F172A,#1e3a5f)' }}
+                className="col-span-2 lg:col-span-1 flex items-center justify-center gap-2 px-6 py-4 rounded-2xl font-bold text-sm sm:text-base text-slate-900 transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] bg-amber-400 hover:bg-amber-300 shadow-[0_0_20px_rgba(251,191,36,0.3)]"
               >
-                <Search className="w-4 h-4" />
+                <Search className="w-5 h-5" />
                 <span>Search</span>
               </button>
             </div>
