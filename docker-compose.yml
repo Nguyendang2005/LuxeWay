@@ -138,7 +138,8 @@ services:
         - VITE_FIREBASE_APP_ID=${VITE_FIREBASE_APP_ID:-1:167557599901:web:8620b719b942660de7ba74}
     container_name: luxeway-frontend
     ports:
-      - "5173:80"
+      - "80:80"
+      - "5173:80" # Keep 5173 for backward compatibility if needed
     depends_on:
       spring-backend:
         condition: service_started

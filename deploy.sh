@@ -33,7 +33,7 @@ DOMAIN="https://luxeway.io.vn"
 
 # Update critical env vars (use sed to replace existing values)
 sed -i "s|^FRONTEND_URL=.*|FRONTEND_URL=$DOMAIN|g" .env
-sed -i "s|^CORS_ALLOWED_ORIGINS=.*|CORS_ALLOWED_ORIGINS=$DOMAIN,http://$IP_ADDR:5173,http://localhost:5173|g" .env
+sed -i "s|^CORS_ALLOWED_ORIGINS=.*|CORS_ALLOWED_ORIGINS=$DOMAIN,http://$IP_ADDR:5173,http://$IP_ADDR,http://localhost:5173|g" .env
 
 # Frontend uses relative URLs via nginx proxy - ensure these are set correctly
 sed -i '/^VITE_API_URL=/d' .env
@@ -63,7 +63,7 @@ docker compose up -d --build
 echo ""
 echo "=========================================================="
 echo "  DEPLOYMENT COMPLETED!"
-echo "  Frontend: http://$IP_ADDR:5173"
+echo "  Frontend: http://$IP_ADDR (and port 5173)"
 echo "  Backend API: http://$IP_ADDR:8080/api/v1"
 echo "  Swagger UI: http://$IP_ADDR:8080/swagger-ui/index.html"
 echo "=========================================================="
