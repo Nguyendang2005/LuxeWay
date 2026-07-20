@@ -6,8 +6,9 @@ import {
   ChevronLeft, Car, MapPin, Clock, Tag, Loader2, ArrowRight,
   Zap, Lock, Star, Package, Truck, X, Wallet, Building2,
   AlertTriangle, Info, Sparkles, UserCircle, Heart, Briefcase,
-  Check, CloudRain, Smartphone
+  Check, CloudRain, Smartphone, HelpCircle, Users, Activity
 } from 'lucide-react';
+import { DigitalContractModal } from '@/components/booking/DigitalContractModal';
 import { vehicleService } from '@/services/vehicleService';
 import { bookingService, paymentService, paymentMethodService } from '@/services/bookingService';
 import type { Vehicle } from '@/types';
@@ -334,7 +335,12 @@ const BookingWizardPage: React.FC = () => {
   const isVi = t.common.loading.includes('Đang');
 
   // Page level state
-  const [vehicle, setVehicle] = useState<Vehicle | null>(null);
+  const [walletBalance, setWalletBalance] = useState<number>(0);
+  const [walletLoading, setWalletLoading] = useState<boolean>(true);
+  
+  // Contract Modal State
+  const [showContractModal, setShowContractModal] = useState(false);
+  const [pendingBookingId, setPendingBookingId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [processing, setProcessing] = useState(false);
   const [bookingId, setBookingId] = useState<string | null>(null);
@@ -558,30 +564,54 @@ const BookingWizardPage: React.FC = () => {
     if (wizard.step === 4) {
       setProcessing(true);
       try {
-        // 1. Create booking
-        const wizardState = wizard.toWizardState();
-        const booking = await bookingService.create(
-          wizardState,
-          user!.id,
-          vehicle?.vehicleType,
-          {
-            hasChauffeur,
-            weddingPackage,
-            businessPackage,
-            hasHelmet,
-            hasRaincoat,
-            hasPhoneHolder,
-            hasTouringPackage,
-            insuranceTier: 'premium'
-          }
-        );
+        // 1. Create booking if not already created
+        let currentBookingId = pendingBookingId;
+        if (!currentBookingId) {
+          const wizardState = wizard.toWizardState();
+          const booking = await bookingService.create(
+            wizardState,
+            user!.id,
+            vehicle?.vehicleType,
+            {
+              hasChauffeur,
+              weddingPackage,
+              businessPackage,
+              hasHelmet,
+              hasRaincoat,
+              hasPhoneHolder,
+              hasTouringPackage,
+              insuranceTier: 'premium'
+            }
+          );
+          currentBookingId = booking.id;
+          setPendingBookingId(booking.id);
+        }
 
-        // 2. Process payment
+        // 2. Show Digital Contract Modal if not signed yet
+        if (!showContractModal && currentBookingId) {
+          setShowContractModal(true);
+          setProcessing(false);
+          return;
+        }
+      } catch (err: any) {
+        setProcessing(false);
+        toast.error(err.message || 'Failed to create booking');
+        return;
+      }
+    } else {
+      wizard.nextStep();
+    }
+  };
+
+  const processPaymentFlow = async () => {
+    if (!pendingBookingId) return;
+    setProcessing(true);
+    try {
         const returnUrl = `${window.location.origin}/payment/${paymentMethod === 'payos' ? 'payos' : 'momo'}/return`;
         const paymentResult = await paymentService.processPayment(
-          booking.id,
+          pendingBookingId,
           paymentMethod,
-          booking.pricing?.total || totalCost,
+          totalCost,
           returnUrl
         );
 
@@ -605,7 +635,7 @@ const BookingWizardPage: React.FC = () => {
               }).catch(err => console.error('Failed to save credit card:', err));
             }
             // Direct payment success (wallet/card)
-            setBookingId(booking.id);
+            setBookingId(pendingBookingId);
             wizard.setStep(5);
           }
         } else {
@@ -623,10 +653,6 @@ const BookingWizardPage: React.FC = () => {
       } finally {
         setProcessing(false);
       }
-      return;
-    }
-
-    wizard.setStep(wizard.step + 1);
   };
 
   const handleApplyCoupon = async () => {
@@ -1699,6 +1725,21 @@ const BookingWizardPage: React.FC = () => {
             </div>
           </motion.div>
         </div>
+      )}
+
+      {/* Digital Contract Modal */}
+      {pendingBookingId && user && vehicle && (
+        <DigitalContractModal
+          isOpen={showContractModal}
+          onClose={() => setShowContractModal(false)}
+          bookingId={pendingBookingId}
+          vehicleName={`${vehicle.brand} ${vehicle.model}`}
+          customerName={user.displayName || user.firstName + ' ' + user.lastName}
+          onSigned={(contract) => {
+            // Trigger payment immediately after signing
+            processPaymentFlow();
+          }}
+        />
       )}
     </div>
   );

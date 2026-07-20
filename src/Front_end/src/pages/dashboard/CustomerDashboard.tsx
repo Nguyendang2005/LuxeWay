@@ -697,6 +697,28 @@ export const MyBookingsPage: React.FC = () => {
                     {isVi ? 'Chi tiết hành trình' : 'View Journey'}
                   </Link>
 
+                  {(booking.status === 'confirmed' || booking.status === 'active' || booking.status === 'completed') && (
+                    <a
+                      href={`https://luxeway.io.vn/contracts/${booking.id}.pdf`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="py-2.5 rounded-xl text-xs font-bold text-center transition-all duration-200 flex items-center justify-center gap-1.5"
+                      style={{
+                        background: 'var(--lw-bg-secondary)',
+                        color: 'var(--lw-text-primary)',
+                        border: '1px solid var(--lw-border)',
+                      }}
+                      onMouseEnter={e => {
+                        e.currentTarget.style.background = 'var(--lw-bg-card)';
+                      }}
+                      onMouseLeave={e => {
+                        e.currentTarget.style.background = 'var(--lw-bg-secondary)';
+                      }}
+                    >
+                      {isVi ? 'Xem hợp đồng' : 'View Contract'}
+                    </a>
+                  )}
+
                   {booking.status === 'active' && (
                     <Link
                       to={`/dashboard/bookings/${booking.id}/tracking`}
