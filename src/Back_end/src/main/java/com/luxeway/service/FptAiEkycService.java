@@ -23,7 +23,7 @@ public class FptAiEkycService {
 
 
 
-    @Value("${fptai.api-key:BKfUiImFD4DI3RI2OEjoCahBTQOgVtPf}")
+    @Value("${fptai.api-key:nJG3NY4baB7oL9sF16mwVBxSnD2kPyx1}")
     private String apiKey;
 
     @Value("${ekyc.provider:FPTAI}")
@@ -617,3 +617,4 @@ public class FptAiEkycService {
         return result;
     }
 }
+

@@ -74,7 +74,7 @@ $feUrl = if ($env:FRONTEND_URL) { $env:FRONTEND_URL } else { 'http://localhost:5
 $logLevel = if ($env:LOG_LEVEL) { $env:LOG_LEVEL } else { 'INFO' }
 $goongKey = if ($env:GOONG_API_KEY) { $env:GOONG_API_KEY } else { 'mock_goong_key' }
 $geminiKey = if ($env:GEMINI_API_KEY) { $env:GEMINI_API_KEY } else { 'mock_key' }
-$fptaiKey = if ($env:FPTAI_API_KEY) { $env:FPTAI_API_KEY } else { 'BKfUiImFD4DI3RI2OEjoCahBTQOgVtPf' }
+$fptaiKey = if ($env:FPTAI_API_KEY) { $env:FPTAI_API_KEY } else { 'nJG3NY4baB7oL9sF16mwVBxSnD2kPyx1' }
 $ekycProvider = if ($env:EKYC_PROVIDER) { $env:EKYC_PROVIDER } else { 'FPTAI' }
 $port = if ($env:PORT) { $env:PORT } else { '8080' }
 
@@ -165,3 +165,4 @@ Write-Host "  DB        > car_rental_platform @ localhost:1433" -ForegroundColor
 Write-Host "  ==============================" -ForegroundColor Green
 Write-Host ""
 Read-Host "Press Enter to close"
+

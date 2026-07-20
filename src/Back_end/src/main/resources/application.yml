@@ -147,7 +147,7 @@ goong:
   api-key: ${GOONG_API_KEY:mock_goong_key}
 
 fptai:
-  api-key: ${FPTAI_API_KEY:BKfUiImFD4DI3RI2OEjoCahBTQOgVtPf}
+  api-key: ${FPTAI_API_KEY:nJG3NY4baB7oL9sF16mwVBxSnD2kPyx1}
 
 # VNPT eKYC Configuration
 # SECURITY: Set these via environment variables - NEVER hardcode credentials
