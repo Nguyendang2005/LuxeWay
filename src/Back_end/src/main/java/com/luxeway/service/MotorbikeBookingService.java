@@ -64,7 +64,7 @@ public class MotorbikeBookingService {
             if (licenseClass.isEmpty() && (Boolean.TRUE.equals(renter.getDrivingLicenseVerified()) || "VERIFIED".equals(renter.getDriverLicenseStatus()))) {
                 licenseClass = "A1";
             }
-            boolean isMotorbikeLicense = licenseClass.equals("A") || licenseClass.equals("A1");
+            boolean isMotorbikeLicense = licenseClass.contains("A");
             if (!isMotorbikeLicense) {
                 throw new RuntimeException("Your driving license does not support motorcycle rental.");
             }

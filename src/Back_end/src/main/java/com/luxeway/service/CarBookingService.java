@@ -64,13 +64,13 @@ public class CarBookingService {
             if (licenseClass.isEmpty() && (Boolean.TRUE.equals(renter.getDrivingLicenseVerified()) || "VERIFIED".equals(renter.getDriverLicenseStatus()))) {
                 licenseClass = "B1";
             }
-            boolean isCarLicense = licenseClass.startsWith("B") ||
-                                   licenseClass.startsWith("C") ||
-                                   licenseClass.startsWith("D") ||
-                                   licenseClass.startsWith("E") ||
-                                   licenseClass.startsWith("F");
+            boolean isCarLicense = licenseClass.contains("B") ||
+                                   licenseClass.contains("C") ||
+                                   licenseClass.contains("D") ||
+                                   licenseClass.contains("E") ||
+                                   licenseClass.contains("F");
             if (!isCarLicense) {
-                if (licenseClass.startsWith("A")) {
+                if (licenseClass.contains("A")) {
                     throw new RuntimeException("Your driving license only supports motorcycle rental.");
                 } else {
                     throw new RuntimeException("Your driving license does not support car rental.");

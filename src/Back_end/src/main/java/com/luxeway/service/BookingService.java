@@ -108,18 +108,18 @@ public class BookingService {
 
             String licenseClass = renter.getLicenseClass() != null ? renter.getLicenseClass().trim().toUpperCase() : "";
             if (vehicle.getVehicleType() == com.luxeway.enums.VehicleType.MOTORBIKE) {
-                boolean isMotorbikeLicense = licenseClass.startsWith("A");
+                boolean isMotorbikeLicense = licenseClass.contains("A");
                 if (!isMotorbikeLicense) {
                     throw new RuntimeException("Your driving license does not support motorcycle rental");
                 }
             } else if (vehicle.getVehicleType() == com.luxeway.enums.VehicleType.CAR) {
-                boolean isCarLicense = licenseClass.startsWith("B") ||
-                                       licenseClass.startsWith("C") ||
-                                       licenseClass.startsWith("D") ||
-                                       licenseClass.startsWith("E") ||
-                                       licenseClass.startsWith("F");
+                boolean isCarLicense = licenseClass.contains("B") ||
+                                       licenseClass.contains("C") ||
+                                       licenseClass.contains("D") ||
+                                       licenseClass.contains("E") ||
+                                       licenseClass.contains("F");
                 if (!isCarLicense) {
-                    if (licenseClass.startsWith("A")) {
+                    if (licenseClass.contains("A")) {
                         throw new RuntimeException("Bằng lái xe máy hạng " + licenseClass + " không được phép thuê xe ô tô. Vui lòng sử dụng bằng lái xe ô tô (B1, B2, C...)");
                     } else {
                         throw new RuntimeException("Your driving license does not support car rental");
