@@ -58,6 +58,18 @@ grep -q "^VITE_FIREBASE_APP_ID=" .env || echo "VITE_FIREBASE_APP_ID=1:1675575999
 grep -q "^VITE_GOOGLE_CLIENT_ID=" .env || echo "VITE_GOOGLE_CLIENT_ID=847311755277-hkm959nlmjee42aiccr313pah9mtokd2.apps.googleusercontent.com" >> .env
 grep -q "^VITE_GOOGLE_REDIRECT_URI=" .env || echo "VITE_GOOGLE_REDIRECT_URI=$DOMAIN/auth/google/success" >> .env
 sed -i "s|^VITE_GOOGLE_REDIRECT_URI=.*|VITE_GOOGLE_REDIRECT_URI=$DOMAIN/auth/google/success|g" .env
+# Fix backend Google callback URL to use HTTPS domain
+grep -q "^GOOGLE_CALLBACK_URL=" .env && sed -i "s|^GOOGLE_CALLBACK_URL=.*|GOOGLE_CALLBACK_URL=$DOMAIN/login/oauth2/code/google|g" .env || echo "GOOGLE_CALLBACK_URL=$DOMAIN/login/oauth2/code/google" >> .env
+
+# Payment gateway return/cancel URLs (fix localhost fallbacks)
+sed -i "s|^MOMO_RETURN_URL=.*|MOMO_RETURN_URL=$DOMAIN/payment/momo/return|g" .env
+grep -q "^MOMO_RETURN_URL=" .env || echo "MOMO_RETURN_URL=$DOMAIN/payment/momo/return" >> .env
+sed -i "s|^MOMO_IPN_URL=.*|MOMO_IPN_URL=http://$IP_ADDR:8080/api/payment/momo-ipn|g" .env
+grep -q "^MOMO_IPN_URL=" .env || echo "MOMO_IPN_URL=http://$IP_ADDR:8080/api/payment/momo-ipn" >> .env
+sed -i "s|^PAYOS_RETURN_URL=.*|PAYOS_RETURN_URL=$DOMAIN/payment/payos/return|g" .env
+grep -q "^PAYOS_RETURN_URL=" .env || echo "PAYOS_RETURN_URL=$DOMAIN/payment/payos/return" >> .env
+sed -i "s|^PAYOS_CANCEL_URL=.*|PAYOS_CANCEL_URL=$DOMAIN/payment/payos/return|g" .env
+grep -q "^PAYOS_CANCEL_URL=" .env || echo "PAYOS_CANCEL_URL=$DOMAIN/payment/payos/return" >> .env
 
 echo "=== [5/5] Starting Docker Compose (This will take a few minutes) ==="
 docker compose down || true

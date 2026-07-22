@@ -156,12 +156,43 @@ public class EmailService {
 
     public void sendAdminNotification(String subject, String message) {
         log.info("[ADMIN ALERT LOGGER]: Sending notification to admin: {}", subject);
-        String adminEmail = "admin@luxeway.com";
+        String adminEmail = "admin@luxeway.vn";
         String htmlContent = "<h2>LuxeWay Administrative Alert</h2>"
                 + "<p>The following administrative event requires attention:</p>"
                 + "<div style='background-color: #F8FAFC; padding: 12px; border-left: 4px solid #4F46E5; border-radius: 4px; font-family: monospace; white-space: pre-wrap;'>" + message + "</div>"
                 + "<p>Please access the platform operations console to verify details.</p>";
         sendEmail(adminEmail, subject, htmlContent, null, null);
+    }
+
+    /**
+     * Send login alert email to a user after successful login.
+     * Called asynchronously from AuthService to not block login flow.
+     */
+    public void sendLoginAlert(String email, String firstName) {
+        log.info("[LOGIN ALERT]: Sending login notification to {}", email);
+        try {
+            String lang = getLanguageForEmail(email);
+            String safeFirstName = firstName != null ? firstName : "User";
+            String timeStr = java.time.LocalDateTime.now()
+                    .format(java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+            String subject = "[LuxeWay] Successful Login Detected";
+            String htmlContent = "<div style='font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;'>"
+                    + "<div style='background: linear-gradient(135deg, #4F46E5, #7C3AED); padding: 24px; border-radius: 12px 12px 0 0;'>"
+                    + "<h1 style='color: white; margin: 0; font-size: 22px;'>🔐 Login Notification</h1></div>"
+                    + "<div style='background: #F8FAFC; padding: 24px; border-radius: 0 0 12px 12px; border: 1px solid #E2E8F0;'>"
+                    + "<p style='color: #374151;'>Hi <strong>" + safeFirstName + "</strong>,</p>"
+                    + "<p style='color: #374151;'>A successful login was detected on your <strong>LuxeWay</strong> account.</p>"
+                    + "<div style='background: white; border: 1px solid #E2E8F0; border-radius: 8px; padding: 16px; margin: 16px 0;'>"
+                    + "<p style='margin: 4px 0; color: #6B7280; font-size: 14px;'><strong>Time:</strong> " + timeStr + " (UTC+7)</p>"
+                    + "<p style='margin: 4px 0; color: #6B7280; font-size: 14px;'><strong>Account:</strong> " + email + "</p>"
+                    + "</div>"
+                    + "<p style='color: #6B7280; font-size: 14px;'>If this was not you, please <a href='https://luxeway.io.vn/auth/login' style='color: #4F46E5;'>change your password immediately</a>.</p>"
+                    + "<p style='color: #374151;'>— The LuxeWay Security Team</p>"
+                    + "</div></div>";
+            sendEmail(email, subject, htmlContent, null, null);
+        } catch (Exception e) {
+            log.warn("Failed to send login alert email to {}: {}", email, e.getMessage());
+        }
     }
 
     public void sendCustomHtmlEmail(String to, String subject, String htmlContent) {
