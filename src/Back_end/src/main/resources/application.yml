@@ -19,14 +19,21 @@ spring:
   mail:
     host: smtp.gmail.com
     port: 587
-    username: ${MAIL_USERNAME}
-    password: ${MAIL_PASSWORD}
+    username: ${MAIL_USERNAME:luxeway.platform@gmail.com}
+    password: ${MAIL_PASSWORD:nmdy cpzp wrcq mqhs}
     properties:
       mail:
         smtp:
           auth: true
           starttls:
             enable: true
+            required: true
+
+server:
+  forward-headers-strategy: framework
+
+app:
+  frontend-url: ${FRONTEND_URL:http://localhost:5173}
 
   security:
     oauth2:
