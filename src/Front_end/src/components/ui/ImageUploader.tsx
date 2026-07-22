@@ -2,7 +2,7 @@ import React, { useCallback, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Upload, X, Image as ImageIcon, CheckCircle, AlertCircle, Loader2 } from 'lucide-react';
 import { useUIStore } from '@/store';
-import { apiClient } from '@/services/api';
+import { SERVER_BASE } from '@/utils';
 
 interface ImageUploaderProps {
   value?: string; // Current image URL
@@ -69,10 +69,12 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
       }, 200);
 
       const token = localStorage.getItem('luxeway_access_token');
-      const uploadUrl = apiClient.baseURL.replace('/api/v1', '') + '/upload/vehicle-image';
-      const response = await fetch(uploadUrl, {
+      const response = await fetch(`${SERVER_BASE}/upload/vehicle-image`, {
         method: 'POST',
-        headers: token ? { Authorization: `Bearer ${token}` } : {},
+        headers: {
+          ...(SERVER_BASE.includes('ngrok') ? { 'ngrok-skip-browser-warning': 'true' } : {}),
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
         body: formData,
       });
 
