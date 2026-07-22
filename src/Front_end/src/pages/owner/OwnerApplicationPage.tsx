@@ -36,7 +36,7 @@ export const OwnerApplicationPage: React.FC = () => {
       return;
     }
     
-    if (user?.role === 'OWNER') {
+    if (user?.role === 'owner') {
       navigate('/owner');
       return;
     }

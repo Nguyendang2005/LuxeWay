@@ -27,7 +27,7 @@ export const AdminPayoutsTab: React.FC = () => {
     try {
       // withdrawalService fetches from localStorage mock DB since backend doesn't support it yet
       const reqs = await withdrawalService.getAllRequests();
-      setRequests(reqs.sort((a, b) => new Date(b.requestDate).getTime() - new Date(a.requestDate).getTime()));
+      setRequests(reqs.sort((a, b) => new Date(b.requestDate || b.createdAt).getTime() - new Date(a.requestDate || a.createdAt).getTime()));
     } catch (err) {
       toast.error('Failed to load withdrawal requests');
     } finally {
@@ -178,7 +178,7 @@ export const AdminPayoutsTab: React.FC = () => {
                     <td className="py-4 px-4">
                       <StatusBadge status={req.status === 'PENDING' ? 'PENDING' : req.status === 'APPROVED' ? 'ACTIVE' : 'REJECTED'} />
                     </td>
-                    <td className="py-4 px-4 text-xs text-slate-500">{formatDate(req.requestDate)}</td>
+                    <td className="py-4 px-4 text-xs text-slate-500">{formatDate(req.requestDate || req.createdAt)}</td>
                     <td className="py-4 px-4 pr-6 text-right">
                       <button
                         onClick={() => setSelectedRequest(req)}

@@ -16,6 +16,7 @@ import {
 } from 'recharts';
 import { adminService, AdminStats } from '@/services/adminService';
 import { bookingService, paymentService } from '@/services/bookingService';
+import apiClient from '@/services/api';
 import { useToast } from '@/components/ui/Toast';
 import { useUIStore, useAuthStore } from '@/store';
 import { useT } from '@/i18n/translations';
@@ -423,8 +424,8 @@ const AdminDashboard: React.FC = () => {
   const loadOwnerApplications = async () => {
     try {
       setLoadingOwnerApps(true);
-      const res = await apiClient.get(`/admin/owner-applications?status=${ownerAppsStatusFilter}`);
-      setOwnerApps(res.data?.data?.content || []);
+      const res = await apiClient.get<any>(`/admin/owner-applications?status=${ownerAppsStatusFilter}`);
+      setOwnerApps(res?.data?.data?.content || res?.data?.content || res?.content || []);
     } catch (err) {
       console.error(err);
     } finally {

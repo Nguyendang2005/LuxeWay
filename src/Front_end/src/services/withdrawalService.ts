@@ -9,7 +9,9 @@ export interface WithdrawalRequest {
   accountNumber: string;
   status: 'PENDING' | 'APPROVED' | 'REJECTED';
   createdAt: string;
+  requestDate?: string;
   processedAt?: string;
+  rejectionReason?: string;
 }
 
 const STORAGE_KEY = 'luxeway_withdrawals';
@@ -74,6 +76,33 @@ export const withdrawalService = {
     return this.getWithdrawals().filter(w => w.status === 'PENDING').sort((a, b) => 
       new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
     );
+  },
+
+  async getAllRequests(): Promise<WithdrawalRequest[]> {
+    return this.getWithdrawals().map(request => ({
+      ...request,
+      requestDate: request.requestDate || request.createdAt
+    }));
+  },
+
+  async updateRequestStatus(
+    requestId: string,
+    status: WithdrawalRequest['status'],
+    rejectionReason?: string
+  ): Promise<WithdrawalRequest> {
+    const withdrawals = this.getWithdrawals();
+    const reqIndex = withdrawals.findIndex(w => w.id === requestId);
+    if (reqIndex === -1) throw new Error('Khong tim thay yeu cau rut tien.');
+
+    const updated: WithdrawalRequest = {
+      ...withdrawals[reqIndex],
+      status,
+      processedAt: new Date().toISOString(),
+      ...(rejectionReason ? { rejectionReason } : {})
+    };
+    withdrawals[reqIndex] = updated;
+    this.saveWithdrawals(withdrawals);
+    return updated;
   },
 
   async approveWithdrawal(requestId: string): Promise<boolean> {

@@ -23,7 +23,7 @@ export const BecomeOwnerPage: React.FC = () => {
       return;
     }
     
-    if (user?.role === 'OWNER') {
+    if (user?.role === 'owner') {
       navigate('/owner');
       return;
     }

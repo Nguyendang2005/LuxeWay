@@ -35,11 +35,18 @@ export interface OwnerApplicationResponse {
   documents?: OwnerApplicationDocumentResponse[];
 }
 
+type ApiEnvelope<T> = T | { data?: T | { data?: T } };
+
+const unwrapApplication = (response: ApiEnvelope<OwnerApplicationResponse>): OwnerApplicationResponse => {
+  const first = (response as any)?.data ?? response;
+  return ((first as any)?.data ?? first) as OwnerApplicationResponse;
+};
+
 export const ownerApplicationService = {
   getMyApplication: async (): Promise<OwnerApplicationResponse | null> => {
     try {
-      const response = await apiClient.get('/owner-applications/me');
-      return response.data;
+      const response = await apiClient.get<ApiEnvelope<OwnerApplicationResponse>>('/owner-applications/me');
+      return unwrapApplication(response);
     } catch (error: any) {
       if (error.response?.status === 404 || error.response?.status === 400) {
         return null; // Not found means no application
@@ -49,38 +56,38 @@ export const ownerApplicationService = {
   },
 
   createDraft: async (): Promise<OwnerApplicationResponse> => {
-    const response = await apiClient.post('/owner-applications');
-    return response.data;
+    const response = await apiClient.post<ApiEnvelope<OwnerApplicationResponse>>('/owner-applications', {});
+    return unwrapApplication(response);
   },
 
   updatePersonalInfo: async (id: string, data: any): Promise<OwnerApplicationResponse> => {
-    const response = await apiClient.put(`/owner-applications/${id}/personal-info`, data);
-    return response.data;
+    const response = await apiClient.put<ApiEnvelope<OwnerApplicationResponse>>(`/owner-applications/${id}/personal-info`, data);
+    return unwrapApplication(response);
   },
 
   updateOwnerProfile: async (id: string, data: any): Promise<OwnerApplicationResponse> => {
-    const response = await apiClient.put(`/owner-applications/${id}/owner-profile`, data);
-    return response.data;
+    const response = await apiClient.put<ApiEnvelope<OwnerApplicationResponse>>(`/owner-applications/${id}/owner-profile`, data);
+    return unwrapApplication(response);
   },
 
   updatePayout: async (id: string, data: any): Promise<OwnerApplicationResponse> => {
-    const response = await apiClient.put(`/owner-applications/${id}/payout`, data);
-    return response.data;
+    const response = await apiClient.put<ApiEnvelope<OwnerApplicationResponse>>(`/owner-applications/${id}/payout`, data);
+    return unwrapApplication(response);
   },
 
   addDocument: async (id: string, documentType: string, fileReference: string): Promise<OwnerApplicationResponse> => {
-    const response = await apiClient.post(`/owner-applications/${id}/documents`, {
+    const response = await apiClient.post<ApiEnvelope<OwnerApplicationResponse>>(`/owner-applications/${id}/documents`, {
       documentType,
       fileReference
     });
-    return response.data;
+    return unwrapApplication(response);
   },
 
   submitApplication: async (id: string, accepted: boolean, version: string = '1.0'): Promise<OwnerApplicationResponse> => {
-    const response = await apiClient.post(`/owner-applications/${id}/submit`, {
+    const response = await apiClient.post<ApiEnvelope<OwnerApplicationResponse>>(`/owner-applications/${id}/submit`, {
       accepted,
       version
     });
-    return response.data;
+    return unwrapApplication(response);
   }
 };
