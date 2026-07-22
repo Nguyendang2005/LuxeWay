@@ -23,7 +23,7 @@ import { CorporateDashboard } from '@/components/enterprise/CorporateDashboard';
 // Pages (Eager loaded - critical path)
 import LandingPage from '@/pages/landing/LandingPage';
 import { LoginPage, RegisterPage, ForgotPasswordPage } from '@/pages/auth/AuthPages';
-import OAuth2RedirectHandler from '@/pages/auth/OAuth2RedirectHandler';
+import { OAuth2RedirectHandler } from '@/pages/auth/OAuth2RedirectHandler';
 import MarketplacePage from '@/pages/marketplace/MarketplacePage';
 import VehicleDetailPage from '@/pages/marketplace/VehicleDetailPage';
 import CarsMarketplace from '@/pages/marketplace/CarsMarketplace';
@@ -610,6 +610,8 @@ const App: React.FC = () => {
           <Route element={<MainLayout />}>
             {/* Public routes */}
             <Route index element={<LandingPage />} />
+            <Route path="oauth2/redirect" element={<OAuth2RedirectHandler />} />
+            <Route path="auth/google/success" element={<OAuth2RedirectHandler />} />
             <Route path="marketplace" element={<MarketplacePage />} />
             <Route path="vehicles" element={<MarketplacePage />} />
             <Route path="search" element={<MarketplacePage />} />

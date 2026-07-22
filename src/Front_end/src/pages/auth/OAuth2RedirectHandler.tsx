@@ -70,8 +70,9 @@ export const OAuth2RedirectHandler: React.FC = () => {
             await initAuth();
             toast.success('Login Successful', 'Welcome to LuxeWay!');
             
-            // Navigate to Home page, not dashboard
-            navigate('/', { replace: true });
+            // Navigate to appropriate role dashboard
+            const targetPath = getRoleBasedDashboard(user);
+            navigate(targetPath, { replace: true });
           } else {
             toast.error('Authentication Failed', 'Failed to retrieve user profile.');
             navigate('/auth/login', { replace: true });
