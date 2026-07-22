@@ -93,8 +93,9 @@ services:
       - JWT_REFRESH_EXPIRATION=${JWT_REFRESH_EXPIRATION:-604800000}
       - MAIL_USERNAME=${MAIL_USERNAME:-your-email@gmail.com}
       - MAIL_PASSWORD=${MAIL_PASSWORD:-your-app-specific-password}
-      - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID:-your-google-client-id}
-      - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET:-your-google-client-secret}
+      - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID:-847311755277-hkm959nlmjee42aiccr313pah9mtokd2.apps.googleusercontent.com}
+      - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET:-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}
+      - GOOGLE_CALLBACK_URL=${GOOGLE_CALLBACK_URL:-https://luxeway.io.vn/login/oauth2/code/google}
       - CORS_ALLOWED_ORIGINS=${CORS_ALLOWED_ORIGINS:-http://localhost:5173,http://160.191.164.132:5173,http://160.191.164.132,http://luxeway.io.vn,https://luxeway.io.vn}
       - VNPAY_TMN_CODE=${VNPAY_TMN_CODE:-LUXEWAY01}
       - VNPAY_SECRET_KEY=${VNPAY_SECRET_KEY:-LUXEWAY_VNPAY_SECRET_KEY_2024}
