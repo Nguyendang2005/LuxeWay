@@ -24,8 +24,11 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 @Configuration
 @EnableWebSecurity
@@ -224,19 +227,26 @@ public class SecurityConfig {
         
         // SECURITY: Read from environment variable for production
         String allowedOriginsEnv = System.getenv("CORS_ALLOWED_ORIGINS");
-        List<String> allowedOrigins;
+        Set<String> allowedOrigins = new LinkedHashSet<>();
         if (allowedOriginsEnv != null && !allowedOriginsEnv.isBlank()) {
-            allowedOrigins = Arrays.asList(allowedOriginsEnv.split(","));
+            Arrays.stream(allowedOriginsEnv.split(","))
+                    .map(String::trim)
+                    .filter(origin -> !origin.isBlank())
+                    .forEach(allowedOrigins::add);
         } else {
             // Default development origins
-            allowedOrigins = Arrays.asList(
-                "http://localhost:3000",
-                "http://localhost:5173",
-                "http://127.0.0.1:5173"
-            );
+            allowedOrigins.add("http://localhost:3000");
+            allowedOrigins.add("http://localhost:5173");
+            allowedOrigins.add("http://127.0.0.1:5173");
         }
+
+        // Keep Firebase Hosting and the VPS domain working even if the deployed .env
+        // misses one of these origins. This prevents production login/API CORS breaks.
+        allowedOrigins.add("https://luxeway-4add3.web.app");
+        allowedOrigins.add("https://luxeway-4add3.firebaseapp.com");
+        allowedOrigins.add("https://luxeway.io.vn");
         
-        config.setAllowedOrigins(allowedOrigins);
+        config.setAllowedOrigins(new ArrayList<>(allowedOrigins));
         config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
         config.setAllowedHeaders(List.of("*"));
         config.setAllowCredentials(true);
